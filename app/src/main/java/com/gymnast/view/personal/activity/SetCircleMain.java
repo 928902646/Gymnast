@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**CESHI
+/**CESHIFD
  * Created by Cymbi on 2016/9/21.
  */
 public class SetCircleMain extends ImmersiveActivity {
