@@ -1,5 +1,6 @@
 package com.gymnast.view.personal.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,23 +8,31 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.gymnast.R;
 import com.gymnast.data.net.API;
 import com.gymnast.data.personal.CircleMainData;
 import com.gymnast.utils.PostUtil;
 import com.gymnast.view.ImmersiveActivity;
 import com.gymnast.view.personal.adapter.CircleMainAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Cymbi on 2016/9/21.12343444
+/**CESHIFD
+ * Created by Cymbi on 2016/9/21.
  */
 public class SetCircleMain extends ImmersiveActivity {
     private List<CircleMainData> list=new ArrayList<>();
