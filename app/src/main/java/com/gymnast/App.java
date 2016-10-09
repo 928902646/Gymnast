@@ -1,5 +1,10 @@
 package com.gymnast;
 
+
+/**
+ * 测试一下
+ */
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;

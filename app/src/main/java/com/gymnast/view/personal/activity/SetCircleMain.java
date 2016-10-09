@@ -42,7 +42,6 @@ public class SetCircleMain extends ImmersiveActivity {
     private CircleMainAdapter adapter;
     private int circleMasterId;
     public static final int HANDLER_DATA=1;
-
     Handler handler =new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -56,7 +55,6 @@ public class SetCircleMain extends ImmersiveActivity {
             }
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
