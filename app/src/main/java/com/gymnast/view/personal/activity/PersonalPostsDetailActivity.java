@@ -73,7 +73,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     String firstCommenter="";
     boolean isPrised=false;
     String token,userId,nickName,avatar;
-    private int tieZiID;
+    private int tieZiID,createId;
     List<CallBackEntity> commentList=new ArrayList<>();
     CallBackAdapter commentAdapter;
     private TextView tvAuthInfo;
@@ -157,6 +157,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                     });
                     break;
             }}};
+
 
 
     @Override
@@ -270,6 +271,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                     if (circleItem!=null&&!circleItem.equals("")){
                         JSONObject item=new JSONObject(circleItem);
                         title=item.getString("title");
+                        createId=item.getInt("createId");
                         createTime=item.getLong("createTime");
                         content=item.getString("content");
                         String userVo=item.getString("userVo");
@@ -334,6 +336,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         ivClose= (ImageView) view.findViewById(R.id.ivClose);
         tvSendTieZi.setOnClickListener(this);
         ivSendTiezi.setOnClickListener(this);
+        circle_head.setOnClickListener(this);
         reflesh.setOnRefreshListener(this);
         etCallBackTieZi.addTextChangedListener(new MyTextWatcher(tvSendTieZi, ivSendTiezi, etCallBackTieZi));
     }
@@ -394,6 +397,11 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.circle_head:
+                Intent i=new Intent(PersonalPostsDetailActivity.this,PersonalOtherHomeActivity.class);
+                i.putExtra("UserID",createId);
+                startActivity(i);
+                break;
             case R.id.tvSendTieZi:
                 handleSendMSG();
                 break;

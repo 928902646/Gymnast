@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ public class CircleMainAdapter extends RecyclerView.Adapter {
     Context context;
     List<CircleMainData> mValues;
     private String id,token;
+    int masterId =-1;
+    private Handler handler;
 
     public CircleMainAdapter(Context context, List<CircleMainData> mValues) {
         this.context = context;
@@ -63,16 +66,17 @@ public class CircleMainAdapter extends RecyclerView.Adapter {
             final CircleMainData circleMainData= mValues.get(position);
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(circleMainData.getAvatar()), 320, 320),viewholder.me_head,320,320);
             viewholder.tvNickname.setText(circleMainData.getNickname());
-            final Integer MasterId=circleMainData.getCircleMasterId();
+            int circleMasterId=circleMainData.getCircleMasterId();
             final int userid=circleMainData.getUserId();
-            if(MasterId!=null&&MasterId==userid){
+            if(circleMasterId!=-1&&circleMasterId==userid){
+                masterId=position;
                 viewholder.circle_main.setVisibility(View.VISIBLE);
             }else {
+                viewholder.circle_main.setVisibility(View.GONE);
             }
             viewholder.llSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     LayoutInflater inflater= LayoutInflater.from(context);
                     View v=inflater.inflate(R.layout.setmaster_dialog, null);
                     final Dialog dialog = new Dialog(context,R.style.Dialog_Fullscreen);
@@ -93,26 +97,48 @@ public class CircleMainAdapter extends RecyclerView.Adapter {
                                 @Override
                                 public void run() {
                                     try {
-                                    SharedPreferences share = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-                                    id = share.getString("UserId", "");
-                                    token = share.getString("Token", "");
-                                    int circle_id= circleMainData.getCircleId();
-                                    int master_id=circleMainData.getUserId();
-                                    String uri= API.BASE_URL+"/v1/circle/setMaster";
-                                    HashMap<String,String> params=new HashMap<String, String>();
-                                    params.put("token",token);
-                                    params.put("circle_id",circle_id+"");
-                                    params.put("master_id",master_id+"");
-                                    params.put("account_id",id);
-                                    String result= PostUtil.sendPostMessage(uri,params);
-                                        JSONObject jsonObject=new JSONObject(result);
-                                    } catch (JSONException e) {
+                                        SharedPreferences share = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+                                        id = share.getString("UserId", "");
+                                        token = share.getString("Token", "");
+                                        int circle_id= circleMainData.getCircleId();
+                                        final int master_id=circleMainData.getUserId();
+                                        String uri= API.BASE_URL+"/v1/circle/setMaster";
+                                        HashMap<String,String> params=new HashMap<String, String>();
+                                        params.put("token",token);
+                                        params.put("circle_id",circle_id+"");
+                                        params.put("master_id",master_id+"");
+                                        params.put("account_id",id);
+                                        String result=PostUtil.sendPostMessage(uri,params);
+                                        JSONObject obj=new JSONObject(result);
+                                        if(obj.getInt("state")==200){
+                                            String url=API.BASE_URL+"/v1/circle/getOne/";
+                                            HashMap<String,String> par=new HashMap<String, String>();
+                                            par.put("circleId",circle_id+"");
+                                            par.put("accountId",id+"");
+                                            String res= GetUtil.sendGetMessage(url,par);
+                                            JSONObject object=new JSONObject(res);
+                                            JSONObject data = object.getJSONObject("data");
+                                            JSONObject circle=data.getJSONObject("circle");
+                                            int circleMasterId=circle.getInt("circleMasterId");
+                                            circleMainData.setCircleMasterId(circleMasterId);
+                                            if(masterId!=-1){
+                                                mValues.get(masterId).setCircleMasterId(circleMasterId);
+                                            }
+                                            Activity activity=(Activity)context;
+                                            activity.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    notifyDataSetChanged();
+                                                }
+                                            });
+                                        }
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
                             }).start();
                             dialog.dismiss();
-                            notifyDataSetChanged();
+
                         }
                     });
                     dialog.setContentView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,

@@ -116,4 +116,14 @@ public class SetCircleMain extends ImmersiveActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(list.size()!=0){
+            list.clear();
+            setData();
+        }else {}
+
+    }
 }
