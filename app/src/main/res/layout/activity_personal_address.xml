@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/personal_layout">
+
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="管理收货地址"
+            />
+
+        <TextView
+            android:id="@+id/add"
+            style="@style/personal_title"
+            android:layout_alignParentRight="true"
+            android:text="添加"
+            android:paddingRight="12dp"
+            />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/recycler_address"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/address_item"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        android:background="@color/background"
+        />
+
+
+</LinearLayout>

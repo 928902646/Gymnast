@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:background="@drawable/apply_back"
+        android:layout_margin="22dp"
+        android:text="报名成功,活动发起审核通过后,\n 我们将第一时间通知您!"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:drawableLeft="@mipmap/icon_apply_background"
+        android:layout_marginTop="5dp"
+        />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/im_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_cancel"
+        android:layout_alignTop="@+id/tv"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="@dimen/dip12"
+        />
+</RelativeLayout>

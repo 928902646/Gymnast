@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.home.HomeActivity">
+  <item
+      android:id="@+id/search_contact"
+      android:title="搜索"
+      android:icon="@mipmap/nav_search"
+      app:actionViewClass="android.widget.SearchView"
+      app:showAsAction="always"/>
+</menu>

@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">体育家</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- home -->
+    <string name="home_tab1">热门</string>
+    <string name="home_tab2">看台</string>
+    <string name="home_tab3">操场</string>
+    <string name="home_tab4">背包</string>
+
+    <!-- qucik option -->
+    <string name="quick_option_text">文字</string>
+    <string name="quick_option_album">相册</string>
+    <string name="quick_option_photo">拍照</string>
+    <string name="quick_option_voice">语音</string>
+    <string name="quick_option_note">便签</string>
+    <string name="quick_option_scan">扫一扫</string>
+    <string name="quick_option_find">找人</string>
+
+    <!-- info -->
+    <string name="app_menu">个人信息</string>
+    <string name="navigation_title">个人信息title</string>
+    <!--pack-->
+    <string name="pack_tv1">\t\t 亲爱的朋友们,今天晚上一定要关注球赛哦！！！大家一定要准时到哦呵呵哒哦嚯嚯就快点撒哈哈撒空间大花达到了凯撒的快乐撒杀了拉萨建立的杀了撒 ADSL卡三等奖AD然后就是吧啦吧啦吧啦一大堆。。。</string>
+    <string name="edittext_password">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>
+    <string name="edittext_number">1234567890</string>
+    <string name="feedback">\t\t 如果您有问题，有需要，有想法;想加入我们,想调戏我们，想督促我们;愿意和我们联络，愿意参加我们的活动，愿意分享感受......您随时都可以联系我们,体育家APP诚挚邀请与我们联络，给我们提出宝贵意见。</string>
+    <!-- login -->
+    <string name="login_activity_title">登录</string>
+    <string name="login_prompt_phone">请输入手机号</string>
+    <string name="login_prompt_password">请输入密码</string>
+    <string name="login_action_sign_in">Sign in or register</string>
+    <string name="login_action_sign_in_short">登录</string>
+    <string name="login_error_invalid_phone">手机号格式错误</string>
+    <string name="login_error_invalid_password">密码太弱</string>
+    <string name="login_error_incorrect_password">密码错误</string>
+    <string name="login_error_field_phone">手机号不能为空</string>
+    <string name="login_error_field_pwd">密码不能为空</string>
+  <string name="login_permission_rationale">"Contacts permissions are needed for providing email
+    completions."
+
+  </string>
+
+
+    <!-- register -->
+    <string name="register_activity_title">注册</string>
+    <string name="register_protocol_activity_title">体育家软件许可及服务协议</string>
+    <string name="register_protocol_title">&lt;体育家软件许可及服务协议&gt;</string>
+    <string name="register_get_code">获取验证码</string>
+    <string name="register_to_next">下一步</string>
+
+    <!-- forget password -->
+    <string name="forget_password_activity_title">密码重置</string>
+
+    <!--personal-->
+
+    <string name="personal_activity_title">个人中心</string>
+    <string name="personal_activity_order">订单</string>
+    <string name="personal_activity_setting">设置</string>
+    <string name="personal_activity_edit">编辑</string>
+    <string name="personal_activity_edit_address">编辑地址</string>
+    <string name="personal_activity_edit_feedback">意见</string>
+    <string name="personal_activity_edit_about">关于我们</string>
+    <string name="personal_activity_address">收货地址</string>
+    <string name="live_activity_detail">最新活动详情页</string>
+    <string name="hot_recent_activity">最新活动</string>
+    <string name="activity_Allmsg">全部信息</string>
+
+
+</resources>

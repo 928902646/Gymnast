@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout"
+    >
+
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/ivEditMSGBack"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="编辑个人资料"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rlEditPhoto"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="更换头像"
+            style="@style/personal_setting_item_text"
+            />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rivEditPhoto"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/head"
+            android:scaleType="centerCrop"
+            app:riv_oval="true"
+            app:riv_tile_mode="clamp"
+            android:layout_gravity="center"
+            />
+
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/rlEditDataName"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="昵称"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <TextView
+            android:id="@+id/tvEditNickname"
+            android:text=""
+            style="@style/personal_setting_item_data"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/rlEditSex"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="性别"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <TextView
+            android:id="@+id/tvEditSex"
+            android:text=""
+            style="@style/personal_setting_item_data"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/rlEditBirthday"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="生日"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <TextView
+            android:id="@+id/tvEditBirthday"
+            android:text=""
+            style="@style/personal_setting_item_data"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/rlEditAddress"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="所在地"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <TextView
+            android:id="@+id/tvEditAddress"
+            android:text=""
+            style="@style/personal_setting_item_data"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/rlEditSignature"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="签名"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <TextView
+            android:id="@+id/tvEditSignature"
+            android:text="来个签名吧~"
+            style="@style/personal_setting_item_data"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+</LinearLayout>

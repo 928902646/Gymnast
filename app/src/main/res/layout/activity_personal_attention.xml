@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/personal_layout"
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        style="@style/personal_title_background"
+        >
+        <ImageView
+            android:id="@+id/ivFenSiBack"
+            style="@style/personal_back"
+            />
+        <TextView
+            style="@style/personal_title"
+            android:id="@+id/tvMyConcer"
+            android:text="我的关注"
+            />
+        <ImageView
+            android:id="@+id/tvMoreUser"
+            style="@style/personal_title"
+            android:layout_alignParentRight="true"
+            android:paddingRight="12dp"
+            android:visibility="gone"
+            android:src="@mipmap/icon_add"
+            />
+    </RelativeLayout>
+    <com.gymnast.view.personal.contact.ClearEditText
+        android:id="@+id/ceFilterEdit"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_margin="12dip"
+        android:paddingLeft="8dp"
+        android:background="@drawable/search_bg"
+        android:drawableLeft="@mipmap/sorlistview_search_bar_icon_normal"
+        android:hint="搜索"
+        android:textColor="@color/day_edit_hit_color"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:singleLine="true"
+        android:textSize="15.0dip" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <ListView
+            android:id="@+id/lvRightLetters"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:divider="@null" />
+        <TextView
+            android:id="@+id/tvDialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30.0dip"
+            android:visibility="invisible" />
+
+        <com.gymnast.view.personal.contact.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="30.0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+    </FrameLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

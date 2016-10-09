@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/pack_background"
+
+    >
+
+<LinearLayout
+    style="@style/pack_lin1"
+    >
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pack_head"
+        style="@style/pack_RoundedImageView"
+        app:riv_oval="true"
+        app:riv_tile_mode="clamp"
+        />
+
+    <TextView
+        android:id="@+id/pack_name"
+        style="@style/pack_name"
+        android:text="李娜"
+        android:layout_gravity="center_vertical"
+        />
+    <TextView
+        android:id="@+id/pack_time"
+        android:layout_width="0dp"
+        android:text="5月25日\t15:00"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_gravity="center_vertical"
+        style="@style/pack_time"
+        />
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/pack_tv1"
+            android:text="@string/pack_tv1"
+            style="@style/pack_text"
+            />
+
+    </LinearLayout>
+
+
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"
+        android:columnWidth="98dp"
+        android:verticalSpacing="5dp"
+        android:horizontalSpacing="5dp"
+        android:scrollbars="none"
+        />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/from_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/day_edit_hit_color"
+            android:text="来自"
+            android:textSize="11sp"
+            android:layout_toLeftOf="@+id/from"
+            />
+
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="李娜圈"
+            android:textColor="#00529f"
+            android:layout_alignParentRight="true"
+            android:textSize="11sp"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/re1"
+        style="@style/pack_re1"
+        >
+
+        <TextView
+            style="@style/pack_liulan"
+             />
+
+        <TextView
+            android:id="@+id/pack_like"
+            style="@style/pack_zan"
+            />
+
+        <TextView
+            android:id="@+id/pack_msg"
+            style="@style/pack_msg"
+            />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

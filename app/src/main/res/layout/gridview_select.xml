@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAdd"
+        android:background="@drawable/advanced_setting_selector"
+        android:paddingTop="@dimen/dip8"
+        android:paddingBottom="@dimen/dip8"
+        android:paddingLeft="@dimen/dip10"
+        android:paddingRight="@dimen/dip10"
+        android:text="手机"
+        />
+
+    <ImageView
+        android:id="@+id/photo_del_iv"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_toRightOf="@+id/tvAdd"
+        android:background="@drawable/del_icon"
+        android:visibility="gone"
+        />
+</RelativeLayout>

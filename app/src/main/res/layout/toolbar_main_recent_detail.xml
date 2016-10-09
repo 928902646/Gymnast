@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    style="@style/personal_title_background2"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/personal_back"
+        style="@style/personal_back"
+        />
+
+    <TextView
+        style="@style/personal_title"
+        android:id="@+id/tvTabTitle"
+        android:text=" 长春：市高中联赛总决赛"
+        />
+    <ImageView
+        style="@style/personal_back"
+        android:id="@+id/ivMoreToDo"
+        android:src="@mipmap/nav_more"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="12dp"
+        />
+
+</RelativeLayout>

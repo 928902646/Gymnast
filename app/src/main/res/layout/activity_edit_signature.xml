@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout">
+
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="修改签名"
+            />
+
+        <TextView
+            android:id="@+id/save"
+            style="@style/personal_title"
+            android:text="保存"
+            android:layout_alignParentRight="true"
+            android:paddingRight="12dp"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background1"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+    <EditText
+        android:id="@+id/et_activity_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入签名"
+        android:maxLength="11"
+        android:padding="12dp"
+        android:textColor="@color/day_edit_color"
+        android:background="@null"
+        android:textColorHint="@color/login_input_hint_color"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        />
+</LinearLayout>

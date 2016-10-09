@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">#c20013</color>
+  <color name="colorPrimaryDark">#c20013</color>
+  <color name="colorAccent">#FF4081</color>
+
+  <!--洋李色 -->
+  <color name="gainsboro">#DCDCDC</color>
+
+  <!-- dialog -->
+  <color name="white40">#40FFFFFF</color>
+  <color name="window_background">#EBEBEB</color>
+  <color name="white">#FFFFFF</color>
+  <color name="green">#43c56a</color>
+  <color name="gray">#808080</color>
+  <color name="tablayout">#f7f7f7</color>
+
+  <color name="province_line_border">#C7C7C7</color>
+  <!-- common -->
+  <color name="common_bg">#EEEEEE</color>
+  <item name="gray_holo_dark" type="color">#ff464646</item>
+  <item name="gray_holo_light" type="color">#ffd0d0d0</item>
+<!--pack-->
+  <color name="background">#e5e5e5</color>
+  <color name="background1">#ededed</color>
+  <!-- home -->
+  <color name="home_view_bg_color">#f9f9f9</color>
+  <color name="home_tab_nor_color">#545454</color>
+  <color name="home_tab_pressed_color">#c20013</color>
+
+  <!-- hot info -->
+  <color name="hot_info_banner_title_color">@color/white</color>
+  <color name="hot_info_activity_text_color">@color/home_tab_nor_color</color>
+
+  <color name="color_gray_lighted">#efefef</color>
+  <!-- day -->
+  <color name="day_colorPrimary">#40AA53</color>
+  <color name="day_colorPrimaryDark">#0b751e</color>
+  <color name="day_textColor">#333333</color>
+  <color name="day_infoTextColor">#999999</color>
+  <color name="day_layout_bg_normal">#f6f6f6</color>
+  <color name="day_layout_bg_pressed">#dfdfdf</color>
+  <color name="day_line_color">#e7e7e7</color>
+  <color name="day_windows_bg">#fafafa</color>
+  <color name="day_edit_color">#333333</color>
+  <color name="day_edit_hit_color">#999999</color>
+
+  <!-- login -->
+  <color name="login_input_text_color">#000000</color>
+  <color name="login_input_hint_color">#CCCCCC</color>
+  <color name="login_btn_normal_color">#D80204</color>
+  <color name="login_btn_pressed_color">#9f0305</color>
+  <color name="login_btn_disable_color">#515352</color>
+  <color name="login_tips_color">#605f5f</color>
+  <color name="login_action_text_color">#00529F</color>
+  <color name="login_other_line">#cecdcd</color>
+  <color name="color_gray_normal">#f5f5f5</color>
+  <!-- register -->
+  <color name="register_get_code_text_color">@color/login_btn_normal_color</color>
+
+  <!-- hot info -->
+  <color name="hot_info_item_title_color">#333333</color>
+  <color name="hot_info_circle_title_color">#333333</color>
+  <color name="hot_info_circle_user_name_color">#333333</color>
+  <color name="hot_info_circle_content_color">#666666</color>
+  <color name="hot_info_circle_time_color">#999999</color>
+  <color name="half_black">#e0999999</color>
+  <color name="hot_info_circle_from_color">#00529F</color>
+
+  <color name="stand_live_item_title_color">#333333</color>
+  <color name="play_textview_color_red">#f55b5e</color>
+  <color name="play_textview_color_yellow">#ff9000</color>
+  <color name="play_textview_color_blue">#00d4f1</color>
+  <color name="play_bottom_textview_color_red">#d80204</color>
+  <color name="hot_activity_textview_shuxian">#d5d5d5</color>
+
+  <color name="serach_bg">#dddddd</color>
+
+  <!--dialog-->
+  <color name="text_black">#000000</color>
+  <color name="text_red">#FF0000</color>
+  <color name="text_white">#FFFFFF</color>
+  <color name="main_color">#bcbcbc</color>
+  <color name="black">#000000</color>
+  <color name="red_back">#F45050</color>
+  <color name="red">#ff0000</color>
+  <color name="boot_in_text_red">#ff5861</color>
+  <color name="background_red">#b90000</color>
+  <color name="text">#7f7f7f</color>
+  <color name="result_view">#b0000000</color>
+  <color name="viewfinder_mask">#60000000</color>
+  <color name="possible_result_points">#c0ffff00</color>
+  <color name="transparent">#00000000</color>
+  <color name="viewfinder_frame">#ff000000</color>
+  <color name="viewfinder_laser">#ffff0000</color>
+  <color name="gridview_select">#d6d6d6</color>
+  <color name="color_blue_lighted">#539ad6</color>
+  <color name="color_blue_normal">#61b1f4</color>
+  <color name="color_white">#FFFFFF</color>
+  <color name="color_border_white">#e5e5e5</color>
+  <color name="color_gray">#999999</color>
+  <!-- A light Holo shade of blue -->
+  <color name="holo_blue_light">#ff33b5e5</color>
+  <!-- A light Holo shade of gray -->
+  <color name="holo_gray_light">#33999999</color>
+  <!-- A light Holo shade of green -->
+  <color name="holo_green_light">#ff99cc00</color>
+  <!-- A light Holo shade of red -->
+  <color name="holo_red_light">#ffff4444</color>
+  <!-- A dark Holo shade of blue -->
+  <color name="holo_blue_dark">#ff0099cc</color>
+  <!-- A dark Holo shade of green -->
+  <color name="holo_green_dark">#ff669900</color>
+  <!-- A dark Holo shade of red -->
+  <color name="holo_red_dark">#ffcc0000</color>
+  <!-- A Holo shade of purple -->
+  <color name="holo_purple">#ffaa66cc</color>
+  <!-- A light Holo shade of orange -->
+  <color name="holo_orange_light">#ffffbb33</color>
+  <!-- A dark Holo shade of orange -->
+  <color name="holo_orange_dark">#ffff8800</color>
+  <!-- A really bright Holo shade of blue -->
+  <color name="holo_blue_bright">#ff00ddff</color>
+  <!-- A really bright Holo shade of gray -->
+  <color name="holo_gray_bright">#33CCCCCC</color>
+</resources>

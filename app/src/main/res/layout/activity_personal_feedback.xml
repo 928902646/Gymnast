@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout"
+   >
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/ivFeedBack"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="意见反馈"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+
+<TextView
+    style="@style/personal_setting_item_text"
+    android:text="联系我们"
+    android:padding="12dp"
+    />
+    <TextView
+        android:paddingLeft="15dp"
+        android:paddingRight="12dp"
+        style="@style/personal_setting_item_text"
+        android:text="@string/feedback"
+        android:lineSpacingExtra="9dp"
+        />
+
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+
+
+<TextView
+    android:paddingLeft="15dp"
+    style="@style/personal_setting_item_text"
+    android:text="用户反馈QQ群号码:   319139025"
+    />
+<TextView
+    android:paddingLeft="15dp"
+    style="@style/personal_setting_item_text"
+    android:text="微信服务号:  pay@tiyujia.com"
+    />
+
+
+</LinearLayout>

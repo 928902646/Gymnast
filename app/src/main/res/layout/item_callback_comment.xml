@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gymnast.view.customview.MyLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="25dp"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCommenter"
+        android:textColor="#00529f"
+        android:text="张三"
+        android:textSize="15sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCommentText"
+        android:singleLine="false"
+        android:text=":今天天气真好啊！"
+        android:textColor="#333333"
+        android:textSize="15sp"/>
+</com.gymnast.view.customview.MyLinearLayout>

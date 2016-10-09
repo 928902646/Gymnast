@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout">
+    <RelativeLayout
+        style="@style/personal_title_background"
+        >
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+        <TextView
+            style="@style/personal_title"
+            android:text="动态发布"
+            />
+        <TextView
+            android:id="@+id/tvSetPhoneSave"
+            style="@style/personal_title"
+            android:text="发布"
+            android:layout_alignParentRight="true"
+            android:paddingRight="12dp"
+            />
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/etIssueContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="说点什么吧..."
+        android:minHeight="130dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="15dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/day_edit_color"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/tvIssueEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingRight="12dp"
+        android:text="0/2500"
+        android:textColor="@color/day_edit_hit_color"
+        android:textSize="16sp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvIssue"
+        android:dividerHeight="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="17dp"
+        android:paddingLeft="12dp"
+        android:paddingTop="15dp"
+        android:text="一共可以添加9张照片"
+        android:textColor="@color/day_edit_hit_color" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background" />
+    <RelativeLayout
+        android:id="@+id/rlIssueRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:text="可见范围"
+            android:textColor="@color/day_edit_color"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tvIssueSelectRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="12dp"
+            android:drawableRight="@mipmap/icon_more"
+            android:text="所有人可见"
+            android:textColor="@color/day_edit_color"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background" />
+</LinearLayout>

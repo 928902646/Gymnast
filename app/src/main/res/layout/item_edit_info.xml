@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+<TextView
+    android:id="@+id/tvTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="15sp"
+    android:paddingTop="18dp"
+    android:paddingBottom="@dimen/dip18"
+    android:layout_centerVertical="true"
+    android:textColor="@color/day_edit_color"
+    android:text="姓名"
+    android:layout_marginLeft="@dimen/dip12"
+    />
+<EditText
+    android:id="@+id/edit"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:hint="输入信息"
+    android:maxEms="15"
+    android:maxLines="2"
+    android:text=""
+    android:gravity="right"
+    android:textColor="@color/day_edit_color"
+    android:background="@null"
+    android:layout_marginRight="@dimen/dip12"
+    android:textColorHint="@color/day_edit_hit_color"
+    android:layout_centerVertical="true"
+    android:layout_alignParentRight="true"
+    />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginLeft="@dimen/dip12"
+    android:background="@color/background"
+    android:layout_alignParentBottom="true"
+    />
+</RelativeLayout>

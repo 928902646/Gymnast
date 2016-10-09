@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昨天"
+                android:textSize="16sp"
+                android:textColor="@color/day_edit_color"
+                android:padding="@dimen/dip12"
+                />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            style="@style/pack_lin1"
+            android:padding="@dimen/dip12"
+            >
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/pack_head"
+                style="@style/pack_RoundedImageView"
+                app:riv_oval="true"
+                app:riv_tile_mode="clamp"
+                />
+
+            <TextView
+                android:id="@+id/pack_name"
+                style="@style/pack_name"
+                android:text="李娜"
+                android:layout_toRightOf="@+id/pack_head"
+                android:paddingTop="4dp"
+                />
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="著名体育运动员"
+                android:layout_below="@+id/pack_name"
+                android:layout_alignLeft="@+id/pack_name"
+                android:textColor="@color/day_edit_hit_color"
+                android:textSize="24px"
+                android:paddingTop="8dp"
+                />
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dakljksa"
+            android:textColor="@color/day_edit_color"
+            android:padding="@dimen/dip12"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dip12"
+            android:paddingRight="@dimen/dip12"
+            >
+
+            <TextView
+                android:id="@+id/liulan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="109次浏览"
+                android:textColor="@color/day_edit_hit_color"
+                />
+            <TextView
+                android:id="@+id/like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:paddingRight="12dp"
+                android:layout_toLeftOf="@+id/comment"
+                android:textColor="@color/day_edit_hit_color"
+                android:drawableLeft="@mipmap/icon_like"
+                />
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/day_edit_hit_color"
+                android:drawableLeft="@mipmap/icon_comment"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+</LinearLayout>

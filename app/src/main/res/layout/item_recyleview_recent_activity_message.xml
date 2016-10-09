@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_bg"
+    android:paddingRight="12dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<TextView
+    android:layout_width="1dp"
+    android:layout_height="match_parent"
+    android:background="@color/hot_activity_textview_shuxian"
+    android:layout_marginLeft="30dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:id="@+id/civPhoto"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/icon" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:text="1分钟前"
+                android:id="@+id/tvTimeUtilNow"
+                android:textSize="11sp"
+                android:paddingTop="10dp"
+                android:textColor="@color/day_edit_hit_color"
+                />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="12dp"
+                android:layout_marginTop="1dp"
+                android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="12dp"
+                android:id="@+id/tvContent"
+                android:paddingBottom="12dp"
+                android:background="@color/tablayout"
+                android:lineSpacingExtra="4dp"
+                android:text="晚上好"
+                android:textSize="12sp"
+                android:textColor="@color/hot_info_circle_content_color"/>
+                <ImageView
+                    android:layout_width="124dp"
+                    android:layout_height="61dp"
+                    android:src="@mipmap/koulan"
+                    android:id="@+id/ivPic"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"/>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

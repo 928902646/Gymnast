@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout">
+
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/ivPromulgateBack"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="活动发布"
+            />
+
+        <TextView
+            android:id="@+id/tvPublish"
+            style="@style/personal_title"
+            android:text="发布"
+            android:layout_alignParentRight="true"
+            android:paddingRight="12dp"
+            />
+
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:id="@+id/llDown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+            <RelativeLayout
+                android:id="@+id/add_cover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <ImageView
+                    android:id="@+id/ivHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="209dp"
+                    android:scaleType="fitXY"
+                    />
+                <ImageView
+                    android:id="@+id/ivHeadBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_add_pictures"
+                    android:padding="15dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_add_cover"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="31dp"
+                    />
+                <TextView
+                    android:id="@+id/tvAddImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="添加封面图片"
+                    android:textColor="@color/day_infoTextColor"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/add"
+                    android:paddingTop="18dp"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+            <EditText
+                android:id="@+id/etActivityName"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="输入活动名称"
+                android:paddingLeft="12dp"
+                android:textColor="@color/day_edit_color"
+                android:background="@null"
+                android:textColorHint="@color/login_input_hint_color"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+            <com.gymnast.utils.ScrollviewEditUtil
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:fillViewport="true"
+                >
+
+
+
+            <EditText
+                android:id="@+id/etActivityDescribe"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:hint="填写活动描述，让更多的人参与活动"
+                android:paddingLeft="12dp"
+                android:background="@null"
+                android:paddingTop="15dp"
+                android:scrollbars="none"
+                android:clickable="true"
+                android:gravity="top"
+                android:textColor="@color/day_edit_color"
+                android:maxLength="1200"
+                android:textColorHint="@color/login_input_hint_color"
+                />
+
+            </com.gymnast.utils.ScrollviewEditUtil>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalscrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <GridView
+                        android:id="@+id/gridview"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="12dp"
+                        android:layout_gravity="center_vertical"
+                        />
+                </LinearLayout>
+            </HorizontalScrollView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                >
+
+                <TextView
+                    android:id="@+id/add_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/day_edit_hit_color"
+                    android:text="最多支持9张图片"
+                    android:drawableLeft="@mipmap/icon_picture"
+                    android:drawablePadding="15dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tvTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/day_edit_hit_color"
+                    android:textSize="16sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/common_bg"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"
+                />
+
+
+            <include layout="@layout/activity_promulgate_two"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/home_tab_more_normal" android:textColor="@color/home_tab_pressed_color"/>
+    <item android:drawable="@mipmap/home_tab_more_pressed" android:textColor="@color/home_tab_nor_color" android:state_pressed="true"/>
+</selector> 

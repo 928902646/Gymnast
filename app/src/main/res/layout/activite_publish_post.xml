@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    style="@style/personal_layout"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        style="@style/personal_title_background"
+        >
+
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="发布帖子"
+            />
+        <TextView
+            android:id="@+id/tvPublish"
+            android:paddingRight="12dp"
+            style="@style/personal_title"
+            android:layout_alignParentRight="true"
+            android:text="完成"
+            android:textSize="15sp"
+            />
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/et_post_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/day_edit_color"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:hint="输入标题"
+        android:textSize="18sp"
+        android:background="@null"
+        android:paddingLeft="12dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="8"
+    android:fillViewport="true"
+    android:paddingBottom="15dp"
+    >
+    <!--scrollbars为让edittext自适应-->
+    <EditText
+        android:id="@+id/et_post_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:hint="输入内容"
+        android:textColor="@color/day_edit_color"
+        android:paddingTop="15dp"
+        android:gravity="top"
+        android:textSize="18sp"
+        android:background="@null"
+        android:paddingLeft="12dp"
+        />
+</ScrollView>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+     <GridView
+         android:id="@+id/gridview"
+         android:layout_width="match_parent"
+         android:layout_height="80dp"
+         android:paddingTop="10dp"
+         android:paddingLeft="12dp"
+         android:layout_gravity="center_vertical"
+        />
+        </LinearLayout>
+    </HorizontalScrollView>
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="30dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="15dp"
+        android:src="@mipmap/icon_picture"
+        />
+</LinearLayout>
+

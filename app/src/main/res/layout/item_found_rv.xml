@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:orientation="horizontal">
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rivPhoto"
+        style="@style/pack_RoundedImageView"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        app:riv_oval="true"
+        app:riv_tile_mode="clamp"
+        android:layout_gravity="center_vertical"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/tvLiveName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直播推送用户名"
+            android:layout_marginTop="19dp"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="篮球 户外 互动 数学 聊天"
+            android:id="@+id/tvType"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+  关注"
+        android:id="@+id/tvConcern"
+        android:padding="6dp"
+        android:layout_gravity="center_vertical|right"
+        android:textColor="@color/white"
+        android:background="@drawable/border_radius_cornner_all_green"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/background"/>
+</LinearLayout>

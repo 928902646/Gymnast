@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="50px"
+        android:layout_marginLeft="24px"
+        android:layout_marginRight="24px"
+        android:layout_marginTop="30px"
+        >
+
+        <ImageView
+            android:id="@+id/commodity"
+            android:layout_width="86dp"
+            android:layout_height="82dp"
+            android:src="@mipmap/ts"
+            android:layout_marginRight="12dp"
+            />
+
+        <TextView
+            android:id="@+id/introduction"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:text="孙杨同款蓝牙耳机4.1无线音乐耳机运动"
+            android:textColor="@color/day_edit_color"
+            android:textSize="15sp"
+            android:layout_toRightOf="@+id/commodity"
+            android:layout_alignTop="@+id/commodity"
+            />
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/login_btn_normal_color"
+            android:text="3890"
+            android:layout_below="@+id/introduction"
+            android:layout_alignLeft="@+id/introduction"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/day_edit_hit_color"
+            android:text="金币"
+            android:textSize="12sp"
+            android:layout_alignBottom="@+id/money"
+            android:layout_toRightOf="@+id/money"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/day_edit_hit_color"
+            android:text="交易成功"
+            android:layout_alignParentRight="true"
+            android:paddingTop="5dp"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/money"
+            android:textColor="@color/day_edit_hit_color"
+            android:text="x1"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="10dp"
+    >
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2.6"
+        android:layout_height="wrap_content"
+        android:text="共1件商品:"
+        android:textColor="@color/day_edit_color"
+        android:textSize="13dp"
+        android:gravity="right"
+
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="0.8"
+        android:layout_height="wrap_content"
+        android:text="3890金币"
+        android:textColor="@color/day_edit_color"
+        android:textSize="13dp"
+        android:gravity="center"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="(含运费:0.00)"
+        android:textColor="@color/day_edit_hit_color"
+        android:textSize="12sp"
+        android:gravity="center"
+        />
+
+
+</LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+
+    >
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content" />
+
+
+     <TextView
+         android:layout_width="0dp"
+         android:layout_weight="1"
+         android:layout_height="28dp"
+         android:background="@drawable/transparency_button"
+         android:text="删除订单"
+         android:textColor="@color/hot_info_circle_content_color"
+         android:gravity="center"
+         />
+     <TextView
+         android:layout_width="0dp"
+         android:layout_weight="1"
+         android:layout_height="28dp"
+         android:background="@drawable/transparency_button_red"
+         android:text="评价"
+         android:textColor="@color/login_btn_normal_color"
+         android:gravity="center"
+         android:layout_marginLeft="10dp"
+         />
+
+
+
+
+</LinearLayout>
+
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/background"
+        />
+    
+</LinearLayout>

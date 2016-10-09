@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gymnast" >
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <!-- 读取SDCard中的数据权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+        
+    <uses-permission android:name="android.permission.INTERNET" />
+        
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+        
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+        
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+        
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+        
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+        
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+        
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+        
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/tiyujia"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar" >
+        <activity
+            android:name=".view.home.HomeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+        </activity>
+        <activity
+            android:name=".view.user.RegisterActivity"
+            android:label="@string/register_activity_title" />
+        <activity
+            android:name=".view.home.view.WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.user.LoginActivity"
+            android:label="@string/login_activity_title" />
+        <activity
+            android:name=".view.user.ForgetPasswordActivity"
+            android:label="@string/forget_password_activity_title" />
+        <activity
+            android:name=".view.user.RegisterProtocolActivity"
+            android:label="@string/register_protocol_activity_title" />
+        <activity
+            android:name=".view.personal.activity.PersonalActivity"
+            android:label="@string/personal_activity_title" />
+        <activity
+            android:name=".view.personal.activity.OrdersActivity"
+            android:label="@string/personal_activity_order" />
+        <activity
+            android:name=".view.personal.activity.PersonSettingActivity"
+            android:label="@string/personal_activity_setting" />
+        <activity
+            android:name=".view.personal.activity.PersonalEditDataActivity"
+            android:label="@string/personal_activity_edit" />
+        <activity
+            android:name=".view.personal.activity.PersonalEditAddressActivity"
+            android:label="@string/personal_activity_edit_address" />
+        <activity
+            android:name=".view.personal.activity.PersonalFeedbackActivity"
+            android:label="@string/personal_activity_edit_feedback" />
+        <activity
+            android:name=".view.personal.activity.PersonalAboutActivity"
+            android:label="@string/personal_activity_edit_about" />
+        <activity
+            android:name=".view.personal.activity.PersonalAddressActivity"
+            android:label="@string/personal_activity_address" />
+        <activity
+            android:name=".view.live.activity.LiveActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:label="@string/live_activity_detail" >
+            <intent-filter>
+                <action android:name="ACTION_TO_START_LIVE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.personal.activity.PersonalAllMsgActivity" />
+        <activity
+            android:name=".view.personal.activity.PersonalPostsDetailActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            />
+        <activity android:name=".view.personal.activity.PersonalDynamicActivity" />
+        <activity android:name=".view.home.view.GuideActivity" />
+        <activity android:name=".view.home.view.MorePostsActivity" />
+        <activity android:name=".view.personal.activity.ImageActivity" />
+        <activity android:name=".view.personal.activity.SetCircleMain" />
+        <activity android:name=".view.personal.activity.setCircleAdmin" />
+        <activity android:name=".view.personal.activity.PersonalOtherHomeActivity" />
+        <activity android:name=".view.personal.activity.PersonalDynamicDetailActivity" />
+        <activity android:name=".view.personal.contact.PersonalActivityContact" />
+        <activity android:name=".view.personal.activity.PersonalConsigneeActivity" />
+        <activity android:name=".view.personal.activity.PersonalAddressAddActivity" />
+        <activity android:name=".view.personal.activity.PersonalAuthenticationActivity" />
+        <activity android:name=".view.live.activity.CreateLiveActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.HistoryActivityActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.CalendarActivityActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.SettingPriceActivity" />
+        <activity android:name=".view.personal.activity.PersonalCirclePublishActivity" />
+        <activity android:name=".view.personal.activity.PersonalCircleActivity" />
+        <activity android:name=".view.personal.activity.PersonalSignatureActivity" />
+        <activity android:name=".view.pack.view.ActivityMessageActivity" />
+        <activity android:name=".view.picker.BigImageActivity" />
+        <activity
+            android:name=".view.pack.view.PackRangeActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".view.hotinfoactivity.activity.PromulgateActivityActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".view.hotinfoactivity.activity.SettingNumberActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.SignUpActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.AuditActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.AddConditionActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.ActivityDetailsActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.SettingSiteActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.SettingRangeActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.SettingPhoneActivity" />
+        <activity android:name=".view.personal.activity.PersonalCircleCreateActivity" />
+        <activity
+            android:name=".view.pack.view.PlayActivityIssueActivity"
+            android:label="动态发布" />
+        <activity android:name=".view.personal.activity.PersonalEditNickNameActivity" />
+        <activity android:name=".view.citypacker.CityPackerActivity" />
+        <activity android:name=".view.hotinfoactivity.activity.NewActiveActivity" />
+        <activity android:name=".view.live.activity.BarrageActivity" />
+        <activity android:name=".view.personal.activity.PersonalSelectTypeActivity" />
+        <activity android:name=".view.live.activity.CloseLiveActivity" >
+        </activity>
+        <activity android:name=".view.live.activity.MoreLiveActivity" >
+        </activity>
+        <activity android:name=".view.live.activity.SearchActivity" >
+        </activity>
+        <activity android:name=".view.personal.contact.PersonFenSiActivity" >
+        </activity>
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="shixuanleiim#sportclub" />
+        <!-- android:value="cdzyx123456#gymnast"/> -->
+        <!-- 声明SDK所需的service SDK核心功能 -->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".view.home.view.HomeSearchActivity" />
+        <activity android:name=".view.home.view.HomeSearchResultAcitivity" >
+        </activity>
+        <activity android:name=".view.home.view.MoreDynamicActivity"/>
+        <activity android:name=".view.home.view.MoreUserActivity"/>
+        <activity android:name=".view.pack.view.MoreCircleActivity"/>
+        <receiver android:name=".MyReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

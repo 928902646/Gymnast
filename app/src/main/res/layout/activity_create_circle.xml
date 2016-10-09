@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout"
+    >
+
+
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="创建圈子"
+            />
+
+        <TextView
+            android:id="@+id/submit"
+            style="@style/personal_title"
+            android:layout_alignParentRight="true"
+            android:text="完成"
+            android:paddingRight="12dp"
+            />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/circle_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="请输入圈子名称"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:paddingLeft="12dp"
+        android:background="@null"
+        android:textColor="@color/day_edit_color"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+    <EditText
+        android:id="@+id/circle_content"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:hint="请输入你的圈子简介"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:gravity="top"
+        android:paddingTop="15dp"
+        android:paddingLeft="12dp"
+        android:textColor="@color/day_edit_color"
+        android:background="@null"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="选择分类"
+        android:textSize="15sp"
+        android:paddingLeft="@dimen/dip12"
+        android:drawableLeft="@mipmap/icon_label"
+        android:drawablePadding="10dp"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:textColor="@color/day_edit_color"
+        android:gravity="center_vertical"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="12dp"
+        android:paddingLeft="12dp"
+        android:textSize="15sp"
+        android:text="创建圈子是个正经事，一旦创建名字就不能修改哦！"
+        android:textColor="@color/day_edit_hit_color"
+        android:background="@color/common_bg"
+        />
+</LinearLayout>

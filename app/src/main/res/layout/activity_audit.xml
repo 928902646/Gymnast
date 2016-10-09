@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/personal_layout"
+    android:background="@color/background"
+    >
+    <RelativeLayout
+        style="@style/personal_title_background"
+        >
+        <ImageView
+            android:id="@+id/audit_back"
+            style="@style/personal_back"
+            />
+        <TextView
+            android:id="@+id/tvAuditNumber"
+            style="@style/personal_title"
+            android:text="报名"
+            />
+        <com.gymnast.view.hotinfoactivity.customView.MyCMDTextView
+            android:id="@+id/tvAudit"
+            style="@style/personal_title"
+            android:layout_alignParentRight="true"
+            android:text="审核"
+            android:paddingRight="12dp"
+            />
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tbAuditTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tablayout"
+        style="@style/PackTabLayout"
+        android:fillViewport="false" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpAudit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
+</LinearLayout>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout"
+    >
+    <RelativeLayout
+        style="@style/personal_title_background"
+        >
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+        <TextView
+            style="@style/personal_title"
+            android:text="设置"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+
+    <RelativeLayout
+        android:id="@+id/data"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="个人资料"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <ImageView
+            style="@style/personal_setting_item_more"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/address"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="收货地址"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <ImageView
+            style="@style/personal_setting_item_more"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/push"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="接受消息推送"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <ToggleButton
+            android:id="@+id/togglebutton"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/switch_btn"
+            android:button="@null"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/score"
+        style="@style/personal_setting_item"
+        android:visibility="gone"
+        >
+        <TextView
+            android:text="去给我们评分吧"
+            style="@style/personal_setting_item_text"
+            />
+
+
+        <ImageView
+            style="@style/personal_setting_item_more"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+
+
+
+    <RelativeLayout
+        android:id="@+id/feedback"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="意见反馈"
+            style="@style/personal_setting_item_text"
+            />
+        <TextView
+            android:id="@+id/code"
+            style="@style/personal_setting_item_text"
+            android:layout_toLeftOf="@+id/back"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/back"
+            style="@style/personal_setting_item_more"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+
+    <RelativeLayout
+        android:id="@+id/clean"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        >
+        <TextView
+            android:text="清理缓存"
+            style="@style/personal_setting_item_text"
+            />
+
+        <TextView
+            android:id="@+id/cache"
+            style="@style/personal_setting_item_text"
+            android:layout_toLeftOf="@+id/back2"
+            android:text=""
+            />
+        <ImageView
+            android:id="@+id/back2"
+            style="@style/personal_setting_item_more"
+            />
+
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/authentication"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        >
+        <TextView
+            android:text="实名认证"
+            style="@style/personal_setting_item_text"
+            />
+        <ImageView
+            style="@style/personal_setting_item_more"
+            />
+    </RelativeLayout>
+    <TextView
+        style="@style/personal_setting_item_line"
+        />
+    <RelativeLayout
+        android:id="@+id/about"
+        style="@style/personal_setting_item"
+        >
+        <TextView
+            android:text="关于我们"
+            style="@style/personal_setting_item_text"
+            />
+        <ImageView
+            style="@style/personal_setting_item_more"
+            />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/background"
+        />
+    <TextView
+        android:id="@+id/personal_exit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="退出当前账号"
+        android:textColor="@color/login_btn_normal_color"
+        android:gravity="center"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        />
+</LinearLayout>

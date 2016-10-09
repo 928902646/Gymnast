@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_tab_height"
+    android:layout_alignParentBottom="true"
+    android:background="@color/home_view_bg_color"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    >
+
+  <FrameLayout
+      android:id="@+id/tab_info_ll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+
+    <Button
+        android:id="@+id/tab_info_btn"
+        android:layout_width="@dimen/tab_touch_height_bottom"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:drawableTop="@drawable/home_main_tab_1_bg"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        android:text="@string/home_tab1"
+        android:textColor="@color/home_tab_nor_color"
+        android:textSize="@dimen/tab_bottom_button_text_size"
+        />
+
+  </FrameLayout>
+
+  <FrameLayout
+      android:id="@+id/tab_stand_ll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+
+    <Button
+        android:id="@+id/tab_stand_btn"
+        android:layout_width="@dimen/tab_touch_height_bottom"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:drawableTop="@drawable/home_main_tab_2_bg"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        android:text="@string/home_tab2"
+        android:textColor="@color/home_tab_nor_color"
+        android:textSize="@dimen/tab_bottom_button_text_size"
+        />
+
+  </FrameLayout>
+
+  <FrameLayout
+      android:id="@+id/tab_quick_option_ll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+
+    <ImageButton
+        android:id="@+id/tab_quick_option_btn"
+        android:layout_width="@dimen/tab_touch_height_bottom"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/home_main_tab_more_bg"
+        android:textColor="@color/home_tab_nor_color"
+        android:textSize="@dimen/tab_bottom_button_text_size"
+        />
+  </FrameLayout>
+
+  <FrameLayout
+      android:id="@+id/tab_pack_ll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+
+    <Button
+        android:id="@+id/tab_pack_btn"
+        android:layout_width="@dimen/tab_touch_height_bottom"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:drawableTop="@drawable/home_main_tab_3_bg"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        android:text="@string/home_tab3"
+        android:textColor="@color/home_tab_nor_color"
+        android:textSize="@dimen/tab_bottom_button_text_size"
+        />
+  </FrameLayout>
+
+  <FrameLayout
+      android:id="@+id/tab_play_ll"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      >
+
+    <Button
+        android:id="@+id/tab_play_btn"
+        android:layout_width="@dimen/tab_touch_height_bottom"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="#00000000"
+        android:drawableTop="@drawable/home_main_tab_4_bg"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        android:text="我的"
+        android:textColor="@color/home_tab_nor_color"
+        android:textSize="@dimen/tab_bottom_button_text_size"
+        />
+
+  </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingRight="12dp"
+    android:paddingBottom="15dp"
+    android:orientation="vertical"
+    android:paddingLeft="12dp"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:orientation="horizontal">
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rivPhoto"
+        style="@style/pack_RoundedImageView"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        app:riv_oval="true"
+        app:riv_tile_mode="clamp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="15dp"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tvLiveName"
+            style="@style/pack_name"
+            android:text="世界杯预选赛赛事"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:layout_marginTop="15dp"
+
+            />
+        <TextView
+            style="@style/pack_name"
+            android:text="张怡宁"
+            android:id="@+id/tvMainName"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+  关注"
+        android:id="@+id/tvConcern"
+        android:padding="6dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/white"
+        android:background="@drawable/border_radius_cornner_all_green"/>
+</LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:src="@mipmap/demo_03"
+
+    android:id="@+id/ivBigPicutreBike"
+    android:scaleType="fitXY"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="7dp"
+        android:drawableLeft="@mipmap/stand_icon_live"
+        android:drawablePadding="4dp"
+        android:text="Live"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="7dp"
+        android:id="@+id/tvPeopleNumber"
+        android:drawableLeft="@mipmap/stand_icon_phople"
+        android:drawablePadding="4dp"
+        android:text="17000"
+        />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/personal_layout"
+    android:background="@color/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+    <RelativeLayout
+        style="@style/personal_title_background"
+
+        >
+
+        <ImageView
+            android:id="@+id/personal_back"
+            style="@style/personal_back"
+            />
+
+        <TextView
+            style="@style/personal_title"
+            android:text="我的粉丝"
+            />
+
+
+    </RelativeLayout>
+    <com.gymnast.view.personal.contact.ClearEditText
+        android:id="@+id/filter_edit"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_margin="12dip"
+        android:paddingLeft="8dp"
+        android:background="@drawable/search_bg"
+        android:drawableLeft="@mipmap/sorlistview_search_bar_icon_normal"
+        android:hint="搜索"
+        android:textColorHint="@color/day_edit_hit_color"
+        android:singleLine="true"
+        android:textSize="15.0dip" />
+
+
+</LinearLayout>

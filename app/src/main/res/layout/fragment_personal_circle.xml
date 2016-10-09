@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:visibility="gone"
+        android:background="@color/background"
+        />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:padding="12dp"
+      android:visibility="gone"
+      >
+
+      <TextView
+          android:layout_width="43dp"
+          android:layout_height="19dp"
+          android:text="置顶"
+          android:background="@drawable/transparency_button_red"
+          android:textColor="@color/play_bottom_textview_color_red"
+          android:textSize="12sp"
+          android:gravity="center"
+          />
+
+      <TextView
+          android:layout_marginLeft="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="【有奖活动】送门票！！！么么哒"
+          android:textSize="12sp"
+          android:textColor="@color/day_edit_color"
+          />
+
+
+  </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="44dp"
+      android:padding="12dp"
+      android:visibility="gone"
+      >
+
+      <TextView
+          android:layout_width="43dp"
+          android:layout_height="19dp"
+          android:text="置顶"
+          android:background="@drawable/transparency_button_red"
+          android:textColor="@color/play_bottom_textview_color_red"
+          android:textSize="12sp"
+          android:gravity="center"
+          />
+
+      <TextView
+          android:layout_marginLeft="10dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="【公告】送门票！！！么么哒"
+          android:textSize="12sp"
+          android:textColor="@color/day_edit_color"
+          />
+
+
+  </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:visibility="gone"
+        android:background="@color/background"
+        />
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
+
+
+
+

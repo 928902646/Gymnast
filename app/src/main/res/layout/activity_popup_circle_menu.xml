@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@mipmap/triangle"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="22dp"
+    android:layout_marginTop="2dp"
+    />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="11dp"
+        android:layout_marginRight="6dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/pop_bg_shape"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"
+        >
+        <TextView
+            android:id="@+id/setting_circle"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="设置圈主"
+            android:paddingTop="10dp"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/setting_admin"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="增加管理员"
+            android:paddingTop="10dp"
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/delete_circle"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="删除圈子"
+            android:paddingTop="10dp"
+            android:textSize="15sp"
+            android:paddingBottom="15dp"
+            />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
