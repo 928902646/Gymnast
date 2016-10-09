@@ -60,8 +60,12 @@ public class JSONParseUtil {
                         createID=account.getInt("id");
                     }
                     JSONObject account= obj.getJSONObject("account");
-                    JSONObject auth=account.getJSONObject("auth");
-                    int userid=auth.getInt("id");
+                    String authTmp=account.getString("auth");
+                    int userid=0;
+                    if (authTmp!=null&&!authTmp.equals("")&&!authTmp.equals("null")){
+                        JSONObject auth=new JSONObject(authTmp);
+                        userid=auth.getInt("id");
+                    }
                     postsData.setAvatar(avatar);
                     postsData.setUserid(userid);
                     postsData.setId(id);
