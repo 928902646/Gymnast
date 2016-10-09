@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Cymbi on 2016/9/21.
+ * Created by Cymbi on 2016/9/21.12343444
  */
 public class SetCircleMain extends ImmersiveActivity {
     private List<CircleMainData> list=new ArrayList<>();
