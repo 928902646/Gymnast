@@ -39,8 +39,8 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
     List<CircleMainData> mValue;
     private CircleMainData circleMainData;
     private String id,token;
-    private String AdminIds;
     private Integer userid;
+
     public CircleAdminAdapter(Context context, List<CircleMainData> mValue) {
         this.context = context;
         if(mValue.size()==0){
@@ -61,27 +61,85 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof AdminHolder){
-            getCircleInfo();
             AdminHolder viewholder=(AdminHolder) holder;
             circleMainData= mValue.get(position);
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(circleMainData.getAvatar()), 320, 320),viewholder.me_head,320,320);
             viewholder.tvNickname.setText(circleMainData.getNickname());
-
-            String  str = circleMainData.getAdminIds();
-            String[] AdminIds= str.split(",");
-            userid=circleMainData.getUserId();
-            //Integer adminid=Integer.parseInt(AdminIds);
-            for(int i=0;i<AdminIds.length;i++){
-                String  s=AdminIds[i];
-                 Integer adminid= Integer.parseInt(s);
-                    if(adminid==userid){
-                        viewholder.circle_admin.setVisibility(View.VISIBLE);
-                    }else {}
+            List<String> AdminIds=circleMainData.getAdminIds();
+            int userId=circleMainData.getUserId();
+            for(int i=0;i<AdminIds.size();i++){
+                String admin = AdminIds.get(i);
+                if(Integer.parseInt(admin)==userId){
+                    viewholder.circle_admin.setVisibility(View.VISIBLE);
+                }else {
+                    viewholder.circle_admin.setVisibility(View.GONE);
+                }
             }
             viewholder.llSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    showdialog();
+                public void onClick(View view)
+                {
+                    LayoutInflater inflater= LayoutInflater.from(context);
+                    View v=inflater.inflate(R.layout.setmaster_dialog, null);
+                    final Dialog dialog = new Dialog(context,R.style.Dialog_Fullscreen);
+                    LinearLayout llSetMaster = (LinearLayout) v.findViewById(R.id.llSetMaster);
+                    TextView tvText = (TextView) v.findViewById(R.id.tvText);
+                    tvText.setText("设置为管理员");
+                    TextView cancel = (TextView) v.findViewById(R.id.cancel);
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+                    llSetMaster.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int circle_id= circleMainData.getCircleId();
+                                    String adminIds=String.valueOf(userid);
+                                    String uri= API.BASE_URL+"/v1/circle/setAdminIds";
+                                    HashMap<String,String> params=new HashMap<>();
+                                    params.put("token",token);
+                                    params.put("accountId",id);
+                                 //   params.put("adminIds",AdminIds+","+adminIds);
+                                    // params.put("adminIds",userId+"");
+                                    params.put("circleId",circle_id+"");
+                                    String result= PostUtil.sendPostMessage(uri,params);
+                                    Activity activity=(Activity)context;
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(context,"管理员设置成功",Toast.LENGTH_SHORT).show();
+                                            notifyDataSetChanged();
+                                        }
+                                    });
+                                }
+                            }){}.start();
+                            dialog.dismiss();
+                        }
+
+
+                    });
+                    dialog.setContentView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                    Window window = dialog.getWindow();
+                    // 设置显示动画
+                    window.setWindowAnimations(R.style.main_menu_animstyle);
+                    Activity activity=(Activity)context;
+                    WindowManager.LayoutParams wl = window.getAttributes();
+                    wl.x = 0;
+                    wl.y = activity.getWindowManager().getDefaultDisplay().getHeight();
+                    // 以下这两句是为了保证按钮可以水平满屏
+                    wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                    // 设置显示位置
+                    dialog.onWindowAttributesChanged(wl);
+                    // 设置点击外围解散
+                    dialog.setCanceledOnTouchOutside(true);
+                    dialog.show();
                 }
             });
         }
@@ -90,106 +148,18 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mValue.size();
     }
-    private void showdialog() {
-        LayoutInflater inflater= LayoutInflater.from(context);
-        View v=inflater.inflate(R.layout.setmaster_dialog, null);
-        final Dialog dialog = new Dialog(context,R.style.Dialog_Fullscreen);
-        LinearLayout llSetMaster = (LinearLayout) v.findViewById(R.id.llSetMaster);
-        TextView tvText = (TextView) v.findViewById(R.id.tvText);
-        tvText.setText("设置为管理员");
-        TextView cancel = (TextView) v.findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        llSetMaster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setMaster();
-                dialog.dismiss();
-            }
 
-
-        });
-        dialog.setContentView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        Window window = dialog.getWindow();
-        // 设置显示动画
-        window.setWindowAnimations(R.style.main_menu_animstyle);
-        Activity activity=(Activity)context;
-        WindowManager.LayoutParams wl = window.getAttributes();
-        wl.x = 0;
-        wl.y = activity.getWindowManager().getDefaultDisplay().getHeight();
-        // 以下这两句是为了保证按钮可以水平满屏
-        wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        // 设置显示位置
-        dialog.onWindowAttributesChanged(wl);
-        // 设置点击外围解散
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-    }
-
-    private void getCircleInfo() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int circle_id= circleMainData.getCircleId();
-                String uri= API.BASE_URL+"/v1/circle/getOne/";
-                HashMap<String,String> params=new HashMap<String, String>();
-                params.put("circleId",circle_id+"");
-                params.put("accountId",id);
-                String result= GetUtil.sendGetMessage(uri,params);
-                try {
-                    JSONObject obj=new JSONObject(result);
-                    JSONObject data = obj.getJSONObject("data");
-                    JSONObject circle=data.getJSONObject("circle");
-                    AdminIds=circle.getString("adminIds");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void setMaster() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int circle_id= circleMainData.getCircleId();
-                 String adminIds=String.valueOf(userid);
-                String uri= API.BASE_URL+"/v1/circle/setAdminIds";
-                HashMap<String,String> params=new HashMap<>();
-                params.put("token",token);
-                params.put("accountId",id);
-                params.put("adminIds",AdminIds+","+adminIds);
-               // params.put("adminIds",userId+"");
-                params.put("circleId",circle_id+"");
-                String result= PostUtil.sendPostMessage(uri,params);
-                Activity activity=(Activity)context;
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context,"管理员设置成功",Toast.LENGTH_SHORT).show();
-                        notifyDataSetChanged();
-                    }
-                });
-            }
-        }){}.start();
-    }
     class AdminHolder extends RecyclerView.ViewHolder{
         private final ImageView me_head;
         private final TextView tvNickname;
-        private final TextView circle_admin,circle_main;
+        private final TextView circle_admin;
         private final LinearLayout llSelect;
         public AdminHolder(View itemView) {
             super(itemView);
             me_head=(ImageView)itemView.findViewById(R.id.me_head);
             tvNickname=(TextView)itemView.findViewById(R.id.tvNickname);
             circle_admin=(TextView)itemView.findViewById(R.id.circle_admin);
-            circle_main=(TextView)itemView.findViewById(R.id.circle_main);
+           // circle_main=(TextView)itemView.findViewById(R.id.circle_main);
             llSelect=(LinearLayout)itemView.findViewById(R.id.llSelect);
         }
     }
