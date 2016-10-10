@@ -128,7 +128,9 @@ public class CircleMainAdapter extends RecyclerView.Adapter {
                                             activity.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    notifyDataSetChanged();
+                                                  //  notifyDataSetChanged();
+                                                    notifyItemChanged(masterId);
+                                                    notifyItemChanged(position);
                                                 }
                                             });
                                         }

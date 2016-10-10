@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,11 +32,9 @@ import java.util.List;
  */
 public class setCircleAdmin extends ImmersiveActivity {
     private RecyclerView recyclerview;
-    private String id,token,master_id;
-    private int circleMasterId;
-    private String  adminIds;
+    private String id,token;
     private int CircleId;
-    private Integer[] UserIdList;
+    private List<String> admin=new ArrayList<>();
     private List<CircleMainData> list=new ArrayList<>();
     public static final int HANDLER_DATA=1;
     private CircleAdminAdapter adapter;
@@ -64,9 +63,9 @@ public class setCircleAdmin extends ImmersiveActivity {
         SharedPreferences share = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         id = share.getString("UserId", "");
         token = share.getString("Token", "");
-        adminIds=getIntent().getStringExtra("adminIds");
+        String str=getIntent().getStringExtra("adminIds");
+        admin=Arrays.asList(str.split(","));
         CircleId=getIntent().getIntExtra("CircleId",0);
-        circleMasterId=getIntent().getIntExtra("circleMasterId",0);
     }
 
     private void setView() {
@@ -105,8 +104,7 @@ public class setCircleAdmin extends ImmersiveActivity {
                         circleMainData.setNickname(nickName);
                         circleMainData.setUserId(userId);
                         circleMainData.setCircleId(concernId);
-                        circleMainData.setCircleMasterId(circleMasterId);
-                        circleMainData.setAdminIds(adminIds);
+                        circleMainData.setAdminIds(admin);
                         list.add(circleMainData);
                     }
                     handler.sendEmptyMessage(HANDLER_DATA);

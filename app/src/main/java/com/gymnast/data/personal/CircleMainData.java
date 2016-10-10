@@ -1,6 +1,8 @@
 package com.gymnast.data.personal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cymbi on 2016/9/21.
@@ -11,7 +13,7 @@ public class CircleMainData implements Serializable {
     private int userId;
     private int circleId;
     private Integer circleMasterId;
-    private String adminIds;
+    private List<String> adminIds;
     public Integer getCircleMasterId() {
         return circleMasterId;
     }
@@ -20,11 +22,11 @@ public class CircleMainData implements Serializable {
         this.circleMasterId = circleMasterId;
     }
 
-    public String  getAdminIds() {
+    public List<String> getAdminIds() {
         return adminIds;
     }
 
-    public void setAdminIds(String adminIds) {
+    public void setAdminIds(List<String> adminIds) {
         this.adminIds = adminIds;
     }
 
