@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,6 @@ import java.util.List;
 public class CircleAdminAdapter extends RecyclerView.Adapter {
     Context context;
     List<CircleMainData> mValue;
-    private CircleMainData circleMainData;
     private String id,token;
     private Integer userid;
 
@@ -62,18 +62,20 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof AdminHolder){
             AdminHolder viewholder=(AdminHolder) holder;
-            circleMainData= mValue.get(position);
+            final CircleMainData circleMainData = mValue.get(position);
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(circleMainData.getAvatar()), 320, 320),viewholder.me_head,320,320);
             viewholder.tvNickname.setText(circleMainData.getNickname());
             List<String> AdminIds=circleMainData.getAdminIds();
-            int userId=circleMainData.getUserId();
+            viewholder.circle_admin.setVisibility(View.GONE);
             for(int i=0;i<AdminIds.size();i++){
-                String admin = AdminIds.get(i);
-                if(Integer.parseInt(admin)==userId){
-                    viewholder.circle_admin.setVisibility(View.VISIBLE);
-                }else {
-                    viewholder.circle_admin.setVisibility(View.GONE);
-                }
+                String str = AdminIds.get(i);
+                try{ int admin=Integer.parseInt(str);
+                    int userId=circleMainData.getUserId();
+                    if(admin == userId){
+                        viewholder.circle_admin.setVisibility(View.VISIBLE);
+                    }
+                }catch (Exception e){e.printStackTrace();}
+
             }
             viewholder.llSelect.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,7 +106,7 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
                                     HashMap<String,String> params=new HashMap<>();
                                     params.put("token",token);
                                     params.put("accountId",id);
-                                 //   params.put("adminIds",AdminIds+","+adminIds);
+                                    //   params.put("adminIds",AdminIds+","+adminIds);
                                     // params.put("adminIds",userId+"");
                                     params.put("circleId",circle_id+"");
                                     String result= PostUtil.sendPostMessage(uri,params);
@@ -133,7 +135,6 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
                     wl.x = 0;
                     wl.y = activity.getWindowManager().getDefaultDisplay().getHeight();
                     // 以下这两句是为了保证按钮可以水平满屏
-                    wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     wl.height = ViewGroup.LayoutParams.WRAP_CONTENT;
                     // 设置显示位置
                     dialog.onWindowAttributesChanged(wl);
@@ -159,7 +160,7 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
             me_head=(ImageView)itemView.findViewById(R.id.me_head);
             tvNickname=(TextView)itemView.findViewById(R.id.tvNickname);
             circle_admin=(TextView)itemView.findViewById(R.id.circle_admin);
-           // circle_main=(TextView)itemView.findViewById(R.id.circle_main);
+            // circle_main=(TextView)itemView.findViewById(R.id.circle_main);
             llSelect=(LinearLayout)itemView.findViewById(R.id.llSelect);
         }
     }
