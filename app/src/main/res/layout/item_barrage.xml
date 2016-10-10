@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@null">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="30dp"
+    android:background="@drawable/border_radius_cornner_all_black"
+    android:orientation="horizontal"
+    >
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rivPhoto"
+        style="@style/pack_RoundedImageView"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        app:riv_oval="true"
+        app:riv_tile_mode="clamp"
+        android:layout_gravity="center_vertical"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/tvBarrageText"
+        android:layout_marginLeft="5dp"
+        android:paddingRight="15dp"
+        android:singleLine="true"
+        android:textSize="14sp"
+        android:textColor="#ffffff"
+        android:maxEms="12"
+        android:text="123"
+        android:gravity="center_vertical"
+        android:ellipsize="end"/>
+</LinearLayout>
+</RelativeLayout>

@@ -43,8 +43,10 @@ import com.gymnast.utils.StringUtil;
 import com.gymnast.utils.UploadUtil;
 import com.gymnast.view.ImmersiveActivity;
 import com.gymnast.view.home.HomeActivity;
+import com.gymnast.view.live.adapter.BarrageViewAdapter;
 import com.gymnast.view.live.adapter.MessageAdapter;
 import com.gymnast.view.live.customview.BarrageView;
+import com.gymnast.view.live.entity.BarrageViewEntity;
 import com.gymnast.view.live.entity.EndLiveEntity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMGroupChangeListener;
@@ -69,6 +71,7 @@ import java.util.TimerTask;
 
 public class LiveActivity extends ImmersiveActivity implements View.OnClickListener{
     RecyclerView recyclerView;
+    RecyclerView rvBarrage;
     FrameLayout flMain;
     MessageAdapter adapter;
     EMMessageListener msgListener;
@@ -81,18 +84,14 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     ImageView ivSelectPic,ivBarrage,ivBigPicture,ivShowOrHideBarrage,ivPrise,personal_back,ivMoreToDo,ivClose;
     TextView tvOnlineNumber,tvTabTitle,tvBarrageNumber,tvSendBarrage,tvCollect,tvReport,tvDelete, tvSpacial,tvTop;
     Button btnSend;
-    public static ArrayList<BarrageView> barrageViewsAll=new ArrayList<>();//弹幕界面保存信息
-    private TranslateAnimation translateAnimation;
-    private Random random;
     private Intent intent;
     boolean isCollected=false;
     boolean isPraised=false;
     private int liveId=0;
     String bigPictureUrl;
-    private Bitmap bitmapSmallPhoto=null;
-    private Bitmap bitmapSmallUserPhoto=null;
     long startTime=0L;
-    public static long liveTime=0L;//直播持续时间
+    BarrageViewAdapter barrageViewAdapter;
+    List<BarrageViewEntity> barrageList=new ArrayList<>();
     public static int peopleNumber=0;//观众人数
     public static int shareNumber=0;//分享次数
     public static int priseNumber=0;//被点赞次数
@@ -108,10 +107,25 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     public static final int HANDLE_INIT_MESSAGE=444;
     public static final int HANDLE_END_LIVE=777;
     public static final int HANDLE_NUMBER_CHANGE=666;
+    public static final int HANDLE_BARRAGE_BASE_DATA=1234;
     Handler handler=new Handler(){
         @Override
         public void handleMessage(final Message msg) {
             switch (msg.what){
+                case HANDLE_BARRAGE_BASE_DATA:
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LiveActivity.this);
+                    rvBarrage.setLayoutManager(layoutManager);
+                    if (barrageList.size()<=3){
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        rvBarrage.setLayoutParams(lp);
+                    }else {
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 340);
+                        rvBarrage.setLayoutParams(lp);
+                    }
+                    barrageViewAdapter=new BarrageViewAdapter(LiveActivity.this,barrageList);
+                    rvBarrage.setAdapter(barrageViewAdapter);
+                    barrageViewAdapter.notifyDataSetChanged();
+                    break;
                 case HANDLE_NUMBER_CHANGE:
                     Toast.makeText(LiveActivity.this,"用户"+nickName+"进来了",Toast.LENGTH_SHORT).show();
                     tvOnlineNumber.setText(peopleNumber + "人在线");
@@ -178,14 +192,18 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     r1.play();
                     break;
                 case HANDLE_RECEIVE_BARRAGE_MESSAGE://播主或其他观众收到弹幕消息
-                    BarrageMSG barrageMSG= (BarrageMSG) msg.obj;
-                    BarrageView barrageView1=new BarrageView(LiveActivity.this,null,barrageMSG.getPhoto(),barrageMSG.getContent(),nickName);
-                    barrageView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    barrageViewsAll.add(barrageView1);
-                    flMain.addView(barrageView1);
+                    BarrageViewEntity barrageMSG= (BarrageViewEntity) msg.obj;
+                    barrageList.add(barrageMSG);
                     if (isShowing) {
-                        showBarrage();
-                        barrageViewsAll.clear();
+                        if (barrageList.size()<=3){
+                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            rvBarrage.setLayoutParams(lp);
+                        }else {
+                            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 340);
+                            rvBarrage.setLayoutParams(lp);
+                        }
+                        barrageViewAdapter.notifyItemChanged(barrageList.size()-1);
+                        rvBarrage.scrollToPosition(barrageViewAdapter.getItemCount()-1);
                     }
                     flMain.invalidate();
                     break;
@@ -257,6 +275,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         avatar=StringUtil.isNullAvatar(avatar);
         startTime=System.currentTimeMillis();
         recyclerView= (RecyclerView) findViewById(R.id.recycleView);
+        rvBarrage= (RecyclerView) findViewById(R.id.rvBarrage);
         adapter = new MessageAdapter(LiveActivity.this,messageList);
         recyclerView.setAdapter(adapter);
         personal_back= (ImageView) findViewById(R.id.personal_back);
@@ -293,21 +312,18 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 for (EMMessage msg : messages) {
                     if (msg.getType().equals(EMMessage.Type.TXT)) {
                         if (!msg.getFrom().equals(liveOwnerId)){
-                            if (isShowing) {
                                 String content = msg.getBody().toString();
                                 content = content.substring(5, content.length() - 1);
                                 String photoUrl =msg.getStringAttribute("photoUrl", null);
                                 Log.i("tag","getBarrage-----"+photoUrl);
-                                Bitmap photo = PicUtil.getImageBitmap(PicUtil.getImageUrlDetail(LiveActivity.this, photoUrl, 720, 1080));
                                 Log.i("tag", "收到弹幕消息:" + content);
-                                BarrageMSG barrageMSG = new BarrageMSG();
+                                BarrageViewEntity barrageMSG = new BarrageViewEntity();
                                 barrageMSG.setContent(content);
-                                barrageMSG.setPhoto(photo);
+                                barrageMSG.setPicUrl(photoUrl);
                                 Message msgToHandler = new Message();
                                 msgToHandler.what = HANDLE_RECEIVE_BARRAGE_MESSAGE;
                                 msgToHandler.obj = barrageMSG;
                                 handler.sendMessage(msgToHandler);
-                            }
                         }else {
                             String text=msg.getBody().toString();
                             text=text.substring(5,text.length()-1);
@@ -334,7 +350,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                         message.setIconUrl(mainPhotoUrl);
                         message.setTimeUntilNow("刚刚");
                         message.setPictureUrl(body.getRemoteUrl());
-                        Log.i("tag", "收到消息！from-----" + body.getRemoteUrl());
+                        Log.i("tag", "收到消息！get-----" +body.getRemoteUrl());
                         message.setContent("");
                         message.setCreateTime(System.currentTimeMillis());
                         Message msg1=new Message();
@@ -456,22 +472,6 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
             }
         }.start();
     }
-    private static class BarrageMSG implements Serializable{
-        String content;
-        Bitmap photo;
-        public String getContent() {
-            return content;
-        }
-        public void setContent(String content) {
-            this.content = content;
-        }
-        public Bitmap getPhoto() {
-            return photo;
-        }
-        public void setPhoto(Bitmap photo) {
-            this.photo = photo;
-        }
-    }
     private void addListeners() {
         ivMoreToDo.setOnClickListener(this);
         personal_back.setOnClickListener(this);
@@ -485,13 +485,6 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     }
     private void checkUserType() {
         //判断当前app使用者是否是直播发起人
-        new Thread(){
-            @Override
-            public void run() {
-                bitmapSmallPhoto= PicUtil.getImageBitmap(mainPhotoUrl);
-                bitmapSmallUserPhoto= PicUtil.getImageBitmap(PicUtil.getImageUrlDetail(LiveActivity.this,avatar,720,1080));
-            }
-        }.start();
         tvOnlineNumber.setText(peopleNumber + "人在线");
         tvTabTitle.setText(title);
         Picasso.with(this).load(bigPictureUrl).into(ivBigPicture);
@@ -553,22 +546,40 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         HashMap<String,String> params=new HashMap<>();
         params.put("liveId",liveId+"");
         String result= PostUtil.sendPostMessage(getMsgUri,params);
-        JSONObject jsonObject=new JSONObject(result);
-        JSONArray array=jsonObject.getJSONArray("data");
-        for (int i=0;i<array.length();i++){
-            JSONObject object=array.getJSONObject(i);
-            long createTime=object.getLong("createTime");
-            String content=object.getString("content");
-            String imgUrl=object.getString("imgUrl");
-            LiveMessage liveMessage=new LiveMessage();
-            liveMessage.setContent(content);
-            String timeUntil=checkTime(System.currentTimeMillis()-createTime);
-            liveMessage.setTimeUntilNow(timeUntil);
-            liveMessage.setCreateTime(createTime);
-            liveMessage.setIconUrl(mainPhotoUrl);
-            liveMessage.setPictureUrl(imgUrl);
-            messages.add(liveMessage);
-        }
+            JSONObject jsonObject=new JSONObject(result);
+            JSONArray array=jsonObject.getJSONArray("data");
+            for (int i=array.length()-1;i>=0;i--){
+                JSONObject object=array.getJSONObject(i);
+                long createTime=object.getLong("createTime");
+                String content=object.getString("content");
+                String imgUrl=object.getString("imgUrl");
+                LiveMessage liveMessage=new LiveMessage();
+                liveMessage.setContent(content);
+                String timeUntil=checkTime(System.currentTimeMillis()-createTime);
+                liveMessage.setTimeUntilNow(timeUntil);
+                liveMessage.setCreateTime(createTime);
+                liveMessage.setIconUrl(mainPhotoUrl);
+                liveMessage.setPictureUrl(API.IMAGE_URL+imgUrl);
+                messages.add(liveMessage);
+            }
+            String barrageUri=API.BASE_URL+"/v1/live/barrage/history";
+            HashMap<String,String> paramsBarrage=new HashMap<>();
+            paramsBarrage.put("liveId",liveId+"");
+            Log.i("tag", "liveID---------->"+liveId);
+            String resultBarrage=PostUtil.sendPostMessage(barrageUri,paramsBarrage);
+            JSONObject object=new JSONObject(resultBarrage);
+            String  barrageObj=object.getString("barrages");
+            if (barrageObj!=null&&!barrageObj.equals("")&&!barrageObj.equals("null")){
+                JSONArray barrageArray=object.getJSONArray("barrages");
+                for (int i=barrageArray.length()-1;i>=0;i--){
+                    JSONObject object1=barrageArray.getJSONObject(i);
+                    BarrageViewEntity entity=new BarrageViewEntity();
+                    entity.setPicUrl(API.IMAGE_URL+object1.getString("avatar"));
+                    entity.setContent(object1.getString("content"));
+                    barrageList.add(entity);
+                }
+            }
+            handler.sendEmptyMessage(HANDLE_BARRAGE_BASE_DATA);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -623,12 +634,11 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tvSendBarrage:
-                Bitmap photo1=bitmapSmallUserPhoto;
-                if (etOtherUser.getText().toString().equals("")){
+                if (etOtherUser.getText().toString().trim().equals("")){
                     Toast.makeText(this,"不能发送空弹幕",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                final String content=etOtherUser.getText().toString();
+                final String content=etOtherUser.getText().toString().trim();
                 new Thread(){
                     @Override
                     public void run() {
@@ -648,30 +658,34 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                             message.setMessageStatusCallback(new EMCallBack() {
                                 @Override
                                 public void onSuccess() {
-                                    Log.i("tag","弹幕消息发送成功！");
+                                    Log.i("tag", "弹幕消息发送成功！");
                                 }
+
                                 @Override
                                 public void onError(int i, String s) {
-                                    Log.i("tag","弹幕消息发送失败！");
+                                    Log.i("tag", "弹幕消息发送失败！");
                                 }
+
                                 @Override
                                 public void onProgress(int i, String s) {
-                                    Log.i("tag","弹幕消息发送中！");
+                                    Log.i("tag", "弹幕消息发送中！");
                                 }
                             });
                             EMClient.getInstance().chatManager().sendMessage(message);
+                            BarrageViewEntity entity=new BarrageViewEntity();
+                            entity.setContent(content);
+                            entity.setPicUrl(avatar);
+                            Message message1=new Message();
+                            message1.obj=entity;
+                            message1.what=HANDLE_RECEIVE_BARRAGE_MESSAGE;
+                            handler.sendMessage(message1);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
                     }
                 }.start();
-                BarrageView barrageView1=new BarrageView(this,null,photo1,content,nickName);
-                barrageView1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                barrageViewsAll.add(barrageView1);
-                flMain.addView(barrageView1);
                 InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 im.hideSoftInputFromWindow(etOtherUser.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-                showBarrage();
                 etOtherUser.setText("");
                 break;
             case R.id.llShareToFriends:
@@ -848,47 +862,13 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     }
     private void showOrHideBarrage() {
         if (!isShowing){
-            showBarrage();
             Toast.makeText(this,"弹幕打开",Toast.LENGTH_SHORT).show();
+            rvBarrage.setVisibility(View.VISIBLE);
             isShowing=true;
         }else {
-            if (barrageViewsAll.size()!=0) {
-                for (int i = 0; i < barrageViewsAll.size(); i++) {
-                    barrageViewsAll.get(i).getAnimation().cancel();
-                }
-                barrageViewsAll.clear();
-            }
             Toast.makeText(this,"弹幕关闭",Toast.LENGTH_SHORT).show();
+            rvBarrage.setVisibility(View.GONE);
             isShowing=false;
-        }
-    }
-    public void showBarrage() {
-        if (isShowing){
-            Rect rect = new Rect();
-            getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-            int x = rect.width();
-            int y = rect.height();
-            float windowX=x*1.0f;
-            float windowY=y*1.0f;
-            random=new Random();
-        for(int i=0;i<barrageViewsAll.size();i++){
-            BarrageView barrageView=barrageViewsAll.get(i);
-            int randomFromY=random.nextInt(31)+30;
-            float fromY=randomFromY*windowY/100.0f;
-            float toY=randomFromY*windowY/100.0f;
-            translateAnimation = new TranslateAnimation(windowX,0-6000,fromY,toY);//FromX,ToX,FromY,ToY
-            int speed=(random.nextInt(3)+5);
-            translateAnimation.setDuration(2000 * speed);
-            translateAnimation.setFillAfter(true);
-            barrageView.startAnimation(translateAnimation);
-            barrageView.invalidate();
-            flMain.invalidate();
-            if (barrageView.getAnimation().hasEnded()) {
-                flMain.removeView(barrageView);//.hasEnded()
-                barrageViewsAll.remove(barrageView);
-            }
-            barrageViewsAll.clear();
-        }
         }
     }
     private void selectPicture() {
@@ -898,7 +878,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     }
     private void sendTextMsg() {
         final String imgUrl = "";
-        final String content = etMainUser.getText().toString();
+        final String content = etMainUser.getText().toString().trim();
         if (content.equals("")) {
             Toast.makeText(this, "不能发送空消息！", Toast.LENGTH_SHORT).show();
             return;
@@ -959,11 +939,9 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     public void run() {
                         String path = UploadUtil.getAbsoluteImagePath(LiveActivity.this, originalUri);
                         imgUrl=API.IMAGE_URL+UploadUtil.getNetWorkImageAddress(path,LiveActivity.this);
-                        String result=LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
+                        LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
                         try{
-                            JSONObject jsonObject=new JSONObject(result);
-                            String state=jsonObject.getString("state");
-                            LogUtil.i("tag", state + "直播图片信息上传结果");
+                            LogUtil.i("tag", path + "----直播图片信息上传结果");
                             EMMessage message = EMMessage.createImageSendMessage(path, false, groupId);
                             message.setChatType(EMMessage.ChatType.GroupChat);
                             message.setFrom(liveOwnerId);
@@ -985,7 +963,8 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                             LiveMessage message1=new LiveMessage();
                             message1.setIconUrl(mainPhotoUrl);
                             message1.setTimeUntilNow("刚刚");
-                            message1.setPictureUrl(PicUtil.getImageUrlDetail(LiveActivity.this, imgUrl, 328, 122));
+                            message1.setPictureUrl(imgUrl);
+                            Log.i("tag", "send---------" + imgUrl);
                             message1.setContent("");
                             message1.setCreateTime(System.currentTimeMillis());
                             Message msg1=new Message();

@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
          android:background="@color/common_bg"
-         android:layout_above="@+id/flBottom"
-         android:layout_below="@+id/toolbar_top">
+         android:layout_below="@+id/toolbar_top"
+         android:layout_marginBottom="50dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -78,11 +78,26 @@
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/llBottom"
+        android:layout_alignParentBottom="true">
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rvBarrage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="10dp"
+        ></android.support.v7.widget.RecyclerView>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:id="@+id/flBottom"
-        android:layout_alignParentBottom="true">
+        android:background="@color/background"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,4 +204,5 @@
                 android:textColor="@color/login_input_hint_color"/>
         </LinearLayout>
     </FrameLayout>
+    </LinearLayout>
 </RelativeLayout>

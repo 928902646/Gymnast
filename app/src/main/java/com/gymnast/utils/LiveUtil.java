@@ -48,7 +48,6 @@ public class LiveUtil {
         result = PostUtil.sendPostMessage(url, params);
         return result;
     }
-
     public static void doNext(Activity activity, LiveItem live) {
         Intent intent = new Intent(activity, LiveActivity.class);
         intent.putExtra("type", live.getUserType());
@@ -57,11 +56,10 @@ public class LiveUtil {
         intent.putExtra("title", live.getTitle());
         intent.putExtra("groupId", live.getGroupId());
         intent.putExtra("mainPhotoUrl", PicUtil.getImageUrl(activity, live.getMainPhotoUrl()));
-        intent.putExtra("currentNum", live.getCurrentNum());
         intent.putExtra("liveOwnerId", live.getLiveOwnerId());
+        intent.putExtra("liveState",live.getLiveState());
         activity.startActivity(intent);
     }
-
     public static void doIntoLive(Activity activity, final Handler handler, final LiveItem liveItem) {
         final SharedPreferences share = activity.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         final String userId = share.getString("UserId", "");
@@ -142,9 +140,6 @@ public class LiveUtil {
                                 }
                             }.start();
                         }
-                    } else if (liveItem.getLiveState() == -1) {
-                        Toast.makeText(activity, "您已结结束直播，不能再开启直播！", Toast.LENGTH_SHORT).show();
-                        return;
                     } else {
                         new Thread() {
                             @Override
@@ -169,14 +164,6 @@ public class LiveUtil {
                     }
                 }
             } else {//普通观众进入界面
-                long nowTime = System.currentTimeMillis();
-                if (nowTime < liveItem.getStartTime() || liveItem.getLiveState() == 0) {
-                    Toast.makeText(activity, "直播时间未到，敬请等待播主开启直播！", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (liveItem.getLiveState() == -1) {
-                    Toast.makeText(activity, "直播已结束，请重新选择直播观看！", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
                     if (liveItem.getGroupId() == null || liveItem.getGroupId().equals("")) {
                         Toast.makeText(activity, "播主还未开启直播！", Toast.LENGTH_SHORT).show();
                         return;
@@ -203,7 +190,6 @@ public class LiveUtil {
                         }.start();
                     }
                 }
-            }
         }
         }else {
             Toast.makeText(activity, "亲，没有网络啦！", Toast.LENGTH_SHORT).show();

@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.gymnast.R;
 import com.gymnast.data.hotinfo.LiveMessage;
+import com.gymnast.data.net.API;
 import com.gymnast.utils.PicUtil;
 import com.gymnast.utils.PicassoUtil;
 import com.gymnast.utils.StringUtil;
@@ -48,17 +49,24 @@ public class MessageAdapter extends RecyclerView.Adapter {
         final LiveMessage message=messageList.get(position);
          Picasso.with(context).load(message.getIconUrl()).into(viewHolder.civPhoto);
         String imageUrl=message.getPictureUrl().trim();
-        if (imageUrl.length()>4){
+        Log.i("tag","imageUrl------------->-------------"+imageUrl);
+        String imageUrlFinal="";
+        if (!imageUrl.contains("null")&&!imageUrl.equals(API.IMAGE_URL)&&!imageUrl.equals("")){
             viewHolder.ivPic.setVisibility(View.VISIBLE);
             viewHolder.tvContent.setVisibility(View.GONE);
-            String url= PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(message.getPictureUrl()), 328, 122);
-            PicassoUtil.handlePic(context, url, viewHolder.ivPic, 328, 122);
+            if (imageUrl.contains("easemob")){
+                imageUrlFinal=imageUrl;
+            }else {
+                imageUrlFinal= PicUtil.getImageUrlDetail(context,message.getPictureUrl(), 328, 122);
+            }
+            Log.i("tag","url-------------"+imageUrlFinal);
+            PicassoUtil.handlePic(context, imageUrlFinal, viewHolder.ivPic, 328, 122);
+            final String finalImageUrlFinal = imageUrlFinal;
             viewHolder.ivPic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String imageUrl = StringUtil.isNullAvatar(message.getPictureUrl());
                     Intent i = new Intent(context, ImageActivity.class);
-                    i.putExtra("IMAGE", imageUrl);
+                    i.putExtra("IMAGE", finalImageUrlFinal);
                     context.startActivity(i);
                 }
             });
