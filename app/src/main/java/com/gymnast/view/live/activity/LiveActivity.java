@@ -1,7 +1,9 @@
 package com.gymnast.view.live.activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -35,6 +37,7 @@ import com.gymnast.App;
 import com.gymnast.R;
 import com.gymnast.data.hotinfo.LiveMessage;
 import com.gymnast.data.net.API;
+import com.gymnast.utils.DialogUtil;
 import com.gymnast.utils.LiveUtil;
 import com.gymnast.utils.LogUtil;
 import com.gymnast.utils.PicUtil;
@@ -48,6 +51,7 @@ import com.gymnast.view.live.adapter.MessageAdapter;
 import com.gymnast.view.live.customview.BarrageView;
 import com.gymnast.view.live.entity.BarrageViewEntity;
 import com.gymnast.view.live.entity.EndLiveEntity;
+import com.gymnast.view.user.LoginActivity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.EMMessageListener;
@@ -90,28 +94,43 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     private int liveId=0;
     String bigPictureUrl;
     long startTime=0L;
+    private int LIVE_STATE=0;
     BarrageViewAdapter barrageViewAdapter;
     List<BarrageViewEntity> barrageList=new ArrayList<>();
     public static int peopleNumber=0;//观众人数
     public static int shareNumber=0;//分享次数
-    public static int priseNumber=0;//被点赞次数
     private String tokenAll,liveOwnerId,userId,nickName,imgUrl,avatar,mainPhotoUrl,groupId="",title;
     String url= API.BASE_URL+"/v1/live/text/create";
     public static boolean isShowing=true;
-    public static final int HANDLE_TIME_CHANGE=888;
-    public static final int HANDLE_MAINUSER_SEND_PICTURE_LIVE=333;
-    public static final int HANDLE_OTHERUSER_RECEIVE_PICTURE_LIVE=555;
-    public static final int HANDLE_SEND_TEXT_MESSAGE=999;
-    public static final int HANDLE_RECEIVE_TEXT_MESSAGE=222;
-    public static final int HANDLE_RECEIVE_BARRAGE_MESSAGE=111;
-    public static final int HANDLE_INIT_MESSAGE=444;
-    public static final int HANDLE_END_LIVE=777;
-    public static final int HANDLE_NUMBER_CHANGE=666;
-    public static final int HANDLE_BARRAGE_BASE_DATA=1234;
+    public static final int HANDLE_TIME_CHANGE=1;
+    public static final int HANDLE_MAINUSER_SEND_PICTURE_LIVE=2;
+    public static final int HANDLE_OTHERUSER_RECEIVE_PICTURE_LIVE=3;
+    public static final int HANDLE_SEND_TEXT_MESSAGE=4;
+    public static final int HANDLE_RECEIVE_TEXT_MESSAGE=5;
+    public static final int HANDLE_RECEIVE_BARRAGE_MESSAGE=6;
+    public static final int HANDLE_INIT_MESSAGE=7;
+    public static final int HANDLE_END_LIVE=8;
+    public static final int HANDLE_NEWUSER_IN=9;
+    public static final int HANDLE_NEWUSER_OUT=10;
+    public static final int HANDLE_BARRAGE_BASE_DATA=11;
+    public static final int HANDLE_UNKNOWN_ERROR=12;
+    public static final int HANDLE_CANCEL_PRISE=13;
+    public static final int HANDLE_PRISE=14;
     Handler handler=new Handler(){
         @Override
         public void handleMessage(final Message msg) {
             switch (msg.what){
+                case HANDLE_UNKNOWN_ERROR:
+                    Toast.makeText( LiveActivity.this,"未知错误，请重试！",Toast.LENGTH_SHORT).show();
+                    break;
+                case HANDLE_CANCEL_PRISE:
+                    ivPrise.setImageResource(R.mipmap.like_pressed);
+                    Toast.makeText( LiveActivity.this,"已取消点赞！",Toast.LENGTH_SHORT).show();
+                    break;
+                case HANDLE_PRISE:
+                    ivPrise.setImageResource(R.mipmap.like_normal);
+                    Toast.makeText( LiveActivity.this,"已点赞！",Toast.LENGTH_SHORT).show();
+                    break;
                 case HANDLE_BARRAGE_BASE_DATA:
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LiveActivity.this);
                     rvBarrage.setLayoutManager(layoutManager);
@@ -126,8 +145,17 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     rvBarrage.setAdapter(barrageViewAdapter);
                     barrageViewAdapter.notifyDataSetChanged();
                     break;
-                case HANDLE_NUMBER_CHANGE:
-                    Toast.makeText(LiveActivity.this,"用户"+nickName+"进来了",Toast.LENGTH_SHORT).show();
+                case HANDLE_NEWUSER_IN:
+                    String nickNameIn= (String) msg.obj;
+                    Toast.makeText(LiveActivity.this,"用户"+nickNameIn+"进来了",Toast.LENGTH_SHORT).show();
+                    peopleNumber+=1;
+                    tvOnlineNumber.setText(peopleNumber + "人在线");
+                    tvOnlineNumber.invalidate();
+                    break;
+                case HANDLE_NEWUSER_OUT:
+                    String nickNameOut= (String) msg.obj;
+                    Toast.makeText(LiveActivity.this,"用户"+nickNameOut+"离开了",Toast.LENGTH_SHORT).show();
+                    peopleNumber-=1;
                     tvOnlineNumber.setText(peopleNumber + "人在线");
                     tvOnlineNumber.invalidate();
                     break;
@@ -194,6 +222,8 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 case HANDLE_RECEIVE_BARRAGE_MESSAGE://播主或其他观众收到弹幕消息
                     BarrageViewEntity barrageMSG= (BarrageViewEntity) msg.obj;
                     barrageList.add(barrageMSG);
+                    RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(LiveActivity.this);
+                    rvBarrage.setLayoutManager(layoutManager2);
                     if (isShowing) {
                         if (barrageList.size()<=3){
                             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -202,12 +232,14 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 340);
                             rvBarrage.setLayoutParams(lp);
                         }
+                        barrageViewAdapter=new BarrageViewAdapter(LiveActivity.this,barrageList);
+                        rvBarrage.setAdapter(barrageViewAdapter);
                         barrageViewAdapter.notifyItemChanged(barrageList.size()-1);
                         rvBarrage.scrollToPosition(barrageViewAdapter.getItemCount()-1);
                     }
                     flMain.invalidate();
                     break;
-                case HANDLE_END_LIVE:
+                case HANDLE_END_LIVE://处理直播结束逻辑
                    final EndLiveEntity entity= (EndLiveEntity) msg.obj;
                     if (user_now==USER_MAIN){
                         handler.postDelayed(new Runnable() {
@@ -315,8 +347,19 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                                 String content = msg.getBody().toString();
                                 content = content.substring(5, content.length() - 1);
                                 String photoUrl =msg.getStringAttribute("photoUrl", null);
-                                Log.i("tag","getBarrage-----"+photoUrl);
+                            if (photoUrl.equals("A8F6C870C92E4D672212E58A089DEEC9")){
+                                Message message=new Message();
+                                message.what=HANDLE_NEWUSER_IN;
+                                message.obj=content;
+                                handler.sendMessage(message);
+                            }else if (photoUrl.equals("F00647B3C94654F3BDE6E3C5944ABADD")){
+                                Message message=new Message();
+                                message.what=HANDLE_NEWUSER_OUT;
+                                message.obj=content;
+                                handler.sendMessage(message);
+                            }else {
                                 Log.i("tag", "收到弹幕消息:" + content);
+                                Log.i("tag", "收到弹幕消息:" + photoUrl);
                                 BarrageViewEntity barrageMSG = new BarrageViewEntity();
                                 barrageMSG.setContent(content);
                                 barrageMSG.setPicUrl(photoUrl);
@@ -324,16 +367,21 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                                 msgToHandler.what = HANDLE_RECEIVE_BARRAGE_MESSAGE;
                                 msgToHandler.obj = barrageMSG;
                                 handler.sendMessage(msgToHandler);
+                            }
                         }else {
                             String text=msg.getBody().toString();
                             text=text.substring(5,text.length()-1);
-                            String stopCommand =msg.getStringAttribute("1B643AEC5CD0034236DDE2E1465D366D", null);
-                            if(stopCommand.equals("1B643AEC5CD0034236DDE2E1465D366D")){
-                                Log.i("tag","收到结束指令");
-                                handler.sendEmptyMessage(HANDLE_END_LIVE);
+                            Log.i("tag","AAAAAA-----------"+text);
+                            String stopCommand =msg.getStringAttribute("photoUrl", null);
+                            Log.i("tag","BBBBBB-----------"+stopCommand);
+                            if (stopCommand!=null){
+                                if(stopCommand.equals("1B643AEC5CD0034236DDE2E1465D366D")){
+                                    Log.i("tag","收到结束指令");
+                                    handler.sendEmptyMessage(HANDLE_END_LIVE);
+                                }
                             }else {
                                 LiveMessage message=new LiveMessage();
-                                message.setPictureUrl("");
+                                message.setPictureUrl("null");
                                 Log.i("tag","getText------"+avatar);
                                 message.setIconUrl(mainPhotoUrl);
                                 message.setTimeUntilNow("刚刚");
@@ -393,7 +441,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
             }
             @Override
             public void onInvitationAccepted(String s, String s1, String s2) {
-                handler.sendEmptyMessage(HANDLE_NUMBER_CHANGE);
+                handler.sendEmptyMessage(HANDLE_NEWUSER_IN);
             }
             @Override
             public void onInvitationDeclined(String s, String s1, String s2) {
@@ -426,6 +474,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     String result = PostUtil.sendPostMessage(uri, params);
                     JSONObject object=new JSONObject(result);
                     JSONObject data=object.getJSONObject("data");
+                    LIVE_STATE=data.getInt("state");
                     peopleNumber=data.getInt("watchNumber");
                     isCollected=data.getBoolean("isColl");
                     isPraised=data.getBoolean("isZan");
@@ -505,9 +554,13 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         try {
-                             EMClient.getInstance().groupManager().joinGroup(groupId);
-                            peopleNumber+=1;
-                            handler.sendEmptyMessage(HANDLE_NUMBER_CHANGE);
+                             EMClient.getInstance().groupManager().joinGroup(groupId);//
+                            EMMessage message = EMMessage.createTxtSendMessage(nickName, groupId);
+                            // 增加自己特定的属性
+                            message.setAttribute("photoUrl", "A8F6C870C92E4D672212E58A089DEEC9");//进入特殊指令
+                            message.setFrom(userId);
+                            message.setChatType(EMMessage.ChatType.GroupChat);
+                            EMClient.getInstance().chatManager().sendMessage(message);
                             Log.i("tag","用户"+userId+"申请进入群聊!群聊ID="+groupId);
                         } catch (HyphenateException e) {
                             e.printStackTrace();
@@ -515,6 +568,9 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                         }
                     }
                 }.start();
+                peopleNumber+=1;
+                tvOnlineNumber.setText(peopleNumber+"人在线");
+                tvOnlineNumber.invalidate();
                 break;
         }
     }
@@ -574,7 +630,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 for (int i=barrageArray.length()-1;i>=0;i--){
                     JSONObject object1=barrageArray.getJSONObject(i);
                     BarrageViewEntity entity=new BarrageViewEntity();
-                    entity.setPicUrl(API.IMAGE_URL+object1.getString("avatar"));
+                    entity.setPicUrl(StringUtil.isNullAvatar(object1.getString("avatar")));
                     entity.setContent(object1.getString("content"));
                     barrageList.add(entity);
                 }
@@ -620,8 +676,12 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 showOrHideBarrage();
                 break;
             case R.id.ivPrise://点赞次数加1
-                priseNumber+=1;
-                Toast.makeText(this,"已为直播积累一点人气！",Toast.LENGTH_SHORT).show();
+                if (LIVE_STATE==-1){
+                    Toast.makeText(this, "直播已结束，亲！", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+                    priseLive();
+                }
                 break;
             case R.id.tvBarrageNumber:
                 Intent intent=new Intent(this,BarrageActivity.class);
@@ -634,59 +694,65 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.tvSendBarrage:
-                if (etOtherUser.getText().toString().trim().equals("")){
-                    Toast.makeText(this,"不能发送空弹幕",Toast.LENGTH_SHORT).show();
+                if (LIVE_STATE==-1){
+                    Toast.makeText(this, "直播已结束，亲！", Toast.LENGTH_SHORT).show();
+                    InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    im.hideSoftInputFromWindow(etMainUser.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     return;
-                }
-                final String content=etOtherUser.getText().toString().trim();
-                new Thread(){
-                    @Override
-                    public void run() {
-                        try{
-                            String uri=API.BASE_URL+"/v1/live/barrage/create";
-                            HashMap<String,String> params=new HashMap<String, String>();
-                            params.put("token",tokenAll);
-                            params.put("liveId",liveId+"");
-                            params.put("userId",userId);
-                            params.put("content", content);
-                            PostUtil.sendPostMessage(uri, params);
-                            EMMessage message = EMMessage.createTxtSendMessage(content, groupId);
-                            // 增加自己特定的属性
-                            message.setAttribute("photoUrl", avatar);
-                            message.setFrom(userId);
-                            message.setChatType(EMMessage.ChatType.GroupChat);
-                            message.setMessageStatusCallback(new EMCallBack() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.i("tag", "弹幕消息发送成功！");
-                                }
-
-                                @Override
-                                public void onError(int i, String s) {
-                                    Log.i("tag", "弹幕消息发送失败！");
-                                }
-
-                                @Override
-                                public void onProgress(int i, String s) {
-                                    Log.i("tag", "弹幕消息发送中！");
-                                }
-                            });
-                            EMClient.getInstance().chatManager().sendMessage(message);
-                            BarrageViewEntity entity=new BarrageViewEntity();
-                            entity.setContent(content);
-                            entity.setPicUrl(avatar);
-                            Message message1=new Message();
-                            message1.obj=entity;
-                            message1.what=HANDLE_RECEIVE_BARRAGE_MESSAGE;
-                            handler.sendMessage(message1);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                }else {
+                    if (etOtherUser.getText().toString().trim().equals("")) {
+                        Toast.makeText(this, "不能发送空弹幕", Toast.LENGTH_SHORT).show();
+                        return;
                     }
-                }.start();
-                InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(etOtherUser.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-                etOtherUser.setText("");
+                    final String content = etOtherUser.getText().toString().trim();
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                String uri = API.BASE_URL + "/v1/live/barrage/create";
+                                HashMap<String, String> params = new HashMap<String, String>();
+                                params.put("token", tokenAll);
+                                params.put("liveId", liveId + "");
+                                params.put("userId", userId);
+                                params.put("content", content);
+                                PostUtil.sendPostMessage(uri, params);
+                                EMMessage message = EMMessage.createTxtSendMessage(content, groupId);
+                                // 增加自己特定的属性
+                                message.setAttribute("photoUrl",avatar);
+                                message.setFrom(userId);
+                                message.setChatType(EMMessage.ChatType.GroupChat);
+                                message.setMessageStatusCallback(new EMCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.i("tag", "弹幕消息发送成功！");
+                                    }
+
+                                    @Override
+                                    public void onError(int i, String s) {
+                                        Log.i("tag", "弹幕消息发送失败！");
+                                    }
+                                    @Override
+                                    public void onProgress(int i, String s) {
+                                        Log.i("tag", "弹幕消息发送中！");
+                                    }
+                                });
+                                EMClient.getInstance().chatManager().sendMessage(message);
+                                BarrageViewEntity entity = new BarrageViewEntity();
+                                entity.setContent(content);
+                                entity.setPicUrl(avatar);
+                                Message message1 = new Message();
+                                message1.obj = entity;
+                                message1.what = HANDLE_RECEIVE_BARRAGE_MESSAGE;
+                                handler.sendMessage(message1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                    InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    im.hideSoftInputFromWindow(etOtherUser.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    etOtherUser.setText("");
+                }
                 break;
             case R.id.llShareToFriends:
                 shareToFriends();
@@ -717,6 +783,38 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 break;
         }
     }
+private boolean isPrised=false;
+    private void priseLive() {
+        new Thread(){
+            @Override
+            public void run() {
+                try{
+                    String uri= API.BASE_URL+"/v1/zan/add";
+                    HashMap<String,String> params=new HashMap<String, String>();
+                    params.put("token",tokenAll);
+                    params.put("bodyId",liveId+"");
+                    params.put("bodyType",4+"");
+                    params.put("accountId",userId);
+                    String result= PostUtil.sendPostMessage(uri,params);
+                    JSONObject obj=new JSONObject(result);
+                    int state=obj.getInt("state");
+                    if (state==200){
+                        if (isPrised){
+                            handler.sendEmptyMessage(HANDLE_CANCEL_PRISE);
+                        }else {
+                            handler.sendEmptyMessage(HANDLE_PRISE);
+                        }
+                        isPrised=!isPrised;
+                    }else {
+                        handler.sendEmptyMessage(HANDLE_UNKNOWN_ERROR);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     private void shareToFriends() {
         Toast.makeText(this,"分享到朋友圈！",Toast.LENGTH_SHORT).show();
         shareNumber++;
@@ -750,64 +848,68 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         Toast.makeText(this,"已置顶！",Toast.LENGTH_SHORT).show();
     }
     private void delete() {
-        new Thread(){
-            @Override
-            public void run() {
-                try{
-                    String uri=API.BASE_URL+"/v1/live/end";
-                    HashMap<String,String> params=new HashMap<String, String>();
-                    params.put("token",tokenAll);
-                    params.put("liveId", liveId + "");
-                    String result=PostUtil.sendPostMessage(uri,params);
-                    JSONObject jsonObject=new JSONObject(result);
-                    JSONObject data=jsonObject.getJSONObject("data");
-                    EndLiveEntity entity=new EndLiveEntity();
-                    long endTime=data.getLong("liveTime");
-                    String totalTime="";
-                    if (endTime<=1000L*60L*60L){
-                        totalTime= (int) (endTime/60000)+"分钟";
-                    }else {
-                        totalTime= (int) (endTime/3600000)+"小时"+(endTime%3600000)/60000+"分钟";
+        if (LIVE_STATE == -1) {
+            finish();
+        } else {
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String uri = API.BASE_URL + "/v1/live/end";
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("token", tokenAll);
+                        params.put("liveId", liveId + "");
+                        String result = PostUtil.sendPostMessage(uri, params);
+                        JSONObject jsonObject = new JSONObject(result);
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        EndLiveEntity entity = new EndLiveEntity();
+                        long endTime = data.getLong("liveTime");
+                        String totalTime = "";
+                        if (endTime <= 1000L * 60L * 60L) {
+                            totalTime = (int) (endTime / 60000) + "分钟";
+                        } else {
+                            totalTime = (int) (endTime / 3600000) + "小时" + (endTime % 3600000) / 60000 + "分钟";
+                        }
+                        entity.setTotalTime(totalTime);
+                        entity.setGroupId(groupId);
+                        entity.setShareNumber(shareNumber);
+                        entity.setBitmapSmallPhotoUrl(mainPhotoUrl);
+                        entity.setNickName(nickName);
+                        entity.setPeopleNumber(data.getInt("watchNumber"));
+                        entity.setPriseNumber(data.getInt("zanCount"));
+                        Message msgEnd = new Message();
+                        msgEnd.obj = entity;
+                        msgEnd.what = HANDLE_END_LIVE;
+                        handler.sendMessage(msgEnd);
+                        EMMessage message = EMMessage.createTxtSendMessage("1B643AEC5CD0034236DDE2E1465D366D", groupId);
+                        // 增加自己特定的属性
+                        message.setAttribute("photoUrl", "1B643AEC5CD0034236DDE2E1465D366D");//关闭特殊指令
+                        message.setFrom(liveOwnerId);
+                        message.setChatType(EMMessage.ChatType.GroupChat);
+                        message.setMessageStatusCallback(new EMCallBack() {
+                            @Override
+                            public void onSuccess() {
+                                Log.i("tag", "关闭成功！");
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                Log.i("tag", "关闭失败！原因是" + s);
+                            }
+
+                            @Override
+                            public void onProgress(int i, String s) {
+                                Log.i("tag", "关闭中！");
+                            }
+                        });
+                        EMClient.getInstance().chatManager().sendMessage(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    entity.setTotalTime(totalTime);
-                    entity.setGroupId(groupId);
-                    entity.setShareNumber(shareNumber);
-                    entity.setBitmapSmallPhotoUrl(mainPhotoUrl);
-                    entity.setNickName(nickName);
-                    entity.setPeopleNumber(data.getInt("watchNumber"));
-                    entity.setPriseNumber(data.getInt("zanCount"));
-                    Message msgEnd=new Message();
-                    msgEnd.obj=entity;
-                    msgEnd.what=HANDLE_END_LIVE;
-                    handler.sendMessage(msgEnd);
-                    EMMessage message = EMMessage.createTxtSendMessage("1B643AEC5CD0034236DDE2E1465D366D", groupId);
-                    // 增加自己特定的属性
-                    message.setAttribute("1B643AEC5CD0034236DDE2E1465D366D", "1B643AEC5CD0034236DDE2E1465D366D");
-                    message.setFrom(liveOwnerId);
-                    message.setChatType(EMMessage.ChatType.GroupChat);
-                    message.setMessageStatusCallback(new EMCallBack() {
-                        @Override
-                        public void onSuccess() {
-                            Log.i("tag", "关闭成功！");
-                        }
-
-                        @Override
-                        public void onError(int i, String s) {
-                            Log.i("tag", "关闭失败！原因是" + s);
-                        }
-
-                        @Override
-                        public void onProgress(int i, String s) {
-                            Log.i("tag", "关闭中！");
-                        }
-                    });
-                    EMClient.getInstance().chatManager().sendMessage(message);
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
-            }
-        }.start();
-        Toast.makeText(this,"已关闭直播！",Toast.LENGTH_SHORT).show();
+            }.start();
+            Toast.makeText(this, "已关闭直播！", Toast.LENGTH_SHORT).show();
+        }
     }
     private void toDoMore() {
         if (user_now==USER_MAIN){
@@ -877,107 +979,123 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         startActivityForResult(intent, 1000);
     }
     private void sendTextMsg() {
-        final String imgUrl = "";
-        final String content = etMainUser.getText().toString().trim();
-        if (content.equals("")) {
-            Toast.makeText(this, "不能发送空消息！", Toast.LENGTH_SHORT).show();
+        if (LIVE_STATE==-1){
+            Toast.makeText(this, "直播已结束，亲！", Toast.LENGTH_SHORT).show();
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(etMainUser.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             return;
-        }
-        new Thread() {
-            @Override
-            public void run() {
-                EMMessage message = EMMessage.createTxtSendMessage(content, groupId);
-                message.setChatType(EMMessage.ChatType.GroupChat);
-                message.setFrom(liveOwnerId);
-                message.setMessageStatusCallback(new EMCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        Log.i("tag", "消息发送成功");
-                    }
-                    @Override
-                    public void onError(int i, String s) {
-                        Log.i("tag", "消息发送失败" + s);
-                    }
-                    @Override
-                    public void onProgress(int i, String s) {
-                        Log.i("tag", "消息发送中");
-                    }
-                });
-                 EMClient.getInstance().chatManager().sendMessage(message);
-                LiveMessage message1=new LiveMessage();
-                message1.setPictureUrl("");
-                message1.setIconUrl(mainPhotoUrl);
-                message1.setTimeUntilNow("刚刚");
-                message1.setCreateTime(System.currentTimeMillis());
-                message1.setContent(content);
-                Message msg=new Message();
-                msg.what=HANDLE_SEND_TEXT_MESSAGE;
-                msg.obj=message1;
-                handler.sendMessage(msg);
-                InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(etMainUser.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                String result= LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, content);
-                try {
-                    JSONObject jsonObject=new JSONObject(result);
-                    String state=jsonObject.getString("state");
-                    LogUtil.i("tag",state+"直播文本信息上传结果");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        }else {
+            final String imgUrl = "";
+            final String content = etMainUser.getText().toString().trim();
+            if (content.equals("")) {
+                Toast.makeText(this, "不能发送空消息！", Toast.LENGTH_SHORT).show();
+                return;
             }
-        }.start();
+            new Thread() {
+                @Override
+                public void run() {
+                    EMMessage message = EMMessage.createTxtSendMessage(content, groupId);
+                    message.setChatType(EMMessage.ChatType.GroupChat);
+                    message.setFrom(liveOwnerId);
+                    message.setMessageStatusCallback(new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            Log.i("tag", "消息发送成功");
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+                            Log.i("tag", "消息发送失败" + s);
+                        }
+
+                        @Override
+                        public void onProgress(int i, String s) {
+                            Log.i("tag", "消息发送中");
+                        }
+                    });
+                    EMClient.getInstance().chatManager().sendMessage(message);
+                    LiveMessage message1 = new LiveMessage();
+                    message1.setPictureUrl("");
+                    message1.setIconUrl(mainPhotoUrl);
+                    message1.setTimeUntilNow("刚刚");
+                    message1.setCreateTime(System.currentTimeMillis());
+                    message1.setContent(content);
+                    Message msg = new Message();
+                    msg.what = HANDLE_SEND_TEXT_MESSAGE;
+                    msg.obj = message1;
+                    handler.sendMessage(msg);
+                    InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    im.hideSoftInputFromWindow(etMainUser.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    String result = LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, content);
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String state = jsonObject.getString("state");
+                        LogUtil.i("tag", state + "直播文本信息上传结果");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000  &&  data != null){
-            // 外界的程序访问ContentProvider所提供数据 可以通过ContentResolver接口
-            try {
-                final Uri originalUri = data.getData(); // 获得图片的uri
-                new Thread(){
-                    @Override
-                    public void run() {
-                        String path = UploadUtil.getAbsoluteImagePath(LiveActivity.this, originalUri);
-                        imgUrl=API.IMAGE_URL+UploadUtil.getNetWorkImageAddress(path,LiveActivity.this);
-                        LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
-                        try{
-                            LogUtil.i("tag", path + "----直播图片信息上传结果");
-                            EMMessage message = EMMessage.createImageSendMessage(path, false, groupId);
-                            message.setChatType(EMMessage.ChatType.GroupChat);
-                            message.setFrom(liveOwnerId);
-                            message.setMessageStatusCallback(new EMCallBack() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.i("tag", "消息发送成功");
-                                }
-                                @Override
-                                public void onError(int i, String s) {
-                                    Log.i("tag", "消息发送失败" + s);
-                                }
-                                @Override
-                                public void onProgress(int i, String s) {
-                                    Log.i("tag", "消息发送中");
-                                }
-                            });
-                            EMClient.getInstance().chatManager().sendMessage(message);
-                            LiveMessage message1=new LiveMessage();
-                            message1.setIconUrl(mainPhotoUrl);
-                            message1.setTimeUntilNow("刚刚");
-                            message1.setPictureUrl(imgUrl);
-                            Log.i("tag", "send---------" + imgUrl);
-                            message1.setContent("");
-                            message1.setCreateTime(System.currentTimeMillis());
-                            Message msg1=new Message();
-                            msg1.what=HANDLE_MAINUSER_SEND_PICTURE_LIVE;
-                            msg1.obj=message1;
-                            handler.sendMessage(msg1);
-                        }catch (Exception e){
-                            e.printStackTrace();
+        if (LIVE_STATE==-1){
+            Toast.makeText(this, "直播已结束，亲！", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            if (requestCode == 1000 && data != null) {
+                // 外界的程序访问ContentProvider所提供数据 可以通过ContentResolver接口
+                try {
+                    final Uri originalUri = data.getData(); // 获得图片的uri
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            String path = UploadUtil.getAbsoluteImagePath(LiveActivity.this, originalUri);
+                            imgUrl = API.IMAGE_URL + UploadUtil.getNetWorkImageAddress(path, LiveActivity.this);
+                            LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
+                            try {
+                                LogUtil.i("tag", path + "----直播图片信息上传结果");
+                                EMMessage message = EMMessage.createImageSendMessage(path, false, groupId);
+                                message.setChatType(EMMessage.ChatType.GroupChat);
+                                message.setFrom(liveOwnerId);
+                                message.setMessageStatusCallback(new EMCallBack() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.i("tag", "消息发送成功");
+                                    }
+
+                                    @Override
+                                    public void onError(int i, String s) {
+                                        Log.i("tag", "消息发送失败" + s);
+                                    }
+
+                                    @Override
+                                    public void onProgress(int i, String s) {
+                                        Log.i("tag", "消息发送中");
+                                    }
+                                });
+                                EMClient.getInstance().chatManager().sendMessage(message);
+                                LiveMessage message1 = new LiveMessage();
+                                message1.setIconUrl(mainPhotoUrl);
+                                message1.setTimeUntilNow("刚刚");
+                                message1.setPictureUrl(imgUrl);
+                                Log.i("tag", "send---------" + imgUrl);
+                                message1.setContent("");
+                                message1.setCreateTime(System.currentTimeMillis());
+                                Message msg1 = new Message();
+                                msg1.what = HANDLE_MAINUSER_SEND_PICTURE_LIVE;
+                                msg1.obj = message1;
+                                handler.sendMessage(msg1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
-            }catch (Exception e){
-                e.printStackTrace();
+                    }.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -985,21 +1103,57 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     protected void onDestroy() {
         EMClient.getInstance().chatManager().removeMessageListener(msgListener);
         super.onDestroy();
-        new Thread(){
-            @Override
-            public void run() {
-                String uri=API.BASE_URL+"/v1/live/out ";
-                HashMap<String,String> params=new HashMap<String, String>();
-                params.put("token",tokenAll);
-                params.put("id",liveId+"");
-                String result=PostUtil.sendPostMessage(uri,params);
-                Log.i("tag","end"+result);
+        }
+    @Override
+    public void onBackPressed() {
+        if (LIVE_STATE == -1) {
+           super.onBackPressed();
+        } else {
+            if (user_now == USER_OTHER) {
+                Toast.makeText(this, "您已离开直播室！", Toast.LENGTH_SHORT).show();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        String uri = API.BASE_URL + "/v1/live/out ";
+                        HashMap<String, String> params = new HashMap<String, String>();
+                        params.put("token", tokenAll);
+                        params.put("id", liveId + "");
+                        String result = PostUtil.sendPostMessage(uri, params);
+                        Log.i("tag", "end" + result);
+                        EMMessage message = EMMessage.createTxtSendMessage(nickName, groupId);
+                        // 增加自己特定的属性
+                        message.setAttribute("photoUrl", "F00647B3C94654F3BDE6E3C5944ABADD");//退出特殊指令
+                        message.setFrom(userId);
+                        message.setChatType(EMMessage.ChatType.GroupChat);
+                        EMClient.getInstance().chatManager().sendMessage(message);
+                    }
+                }.start();
+                try {
+                    Thread.sleep(1000);
+                    EMClient.getInstance().groupManager().leaveGroup(groupId);//groupId
+                    super.onBackPressed();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Dialog dialog = new android.support.v7.app.AlertDialog.Builder(this)
+                        .setTitle("结束")
+                        .setIcon(R.mipmap.wrong)
+                        .setMessage("是否结束直播，请选择？")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                delete();
+                            }
+                        }).setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).create();
+                dialog.setCanceledOnTouchOutside(true);
+                dialog.show();
             }
-        }.start();
-        try {
-            EMClient.getInstance().groupManager().leaveGroup(groupId);//groupId
-        } catch (HyphenateException e) {
-            e.printStackTrace();
         }
     }
 }

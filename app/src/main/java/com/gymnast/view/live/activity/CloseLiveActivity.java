@@ -46,6 +46,7 @@ public class CloseLiveActivity extends ImmersiveActivity {
         tvPeopleNumber.setText(entity.getPeopleNumber() + "");
         tvShareNumber.setText(entity.getShareNumber() + "");
         tvPriseNumber.setText(entity.getPriseNumber() + "");
+        final String groupId=entity.getGroupId();
         tvMoney.setText("直播收益："+new Random().nextInt(100)+"金币");
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +55,6 @@ public class CloseLiveActivity extends ImmersiveActivity {
                 finish();
             }
         });
-       final String groupId=intent.getStringExtra("groupID");
        new Thread(){
             @Override
             public void run() {

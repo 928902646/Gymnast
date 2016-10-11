@@ -49,7 +49,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
         final LiveMessage message=messageList.get(position);
          Picasso.with(context).load(message.getIconUrl()).into(viewHolder.civPhoto);
         String imageUrl=message.getPictureUrl().trim();
-        Log.i("tag","imageUrl------------->-------------"+imageUrl);
         String imageUrlFinal="";
         if (!imageUrl.contains("null")&&!imageUrl.equals(API.IMAGE_URL)&&!imageUrl.equals("")){
             viewHolder.ivPic.setVisibility(View.VISIBLE);
@@ -59,7 +58,6 @@ public class MessageAdapter extends RecyclerView.Adapter {
             }else {
                 imageUrlFinal= PicUtil.getImageUrlDetail(context,message.getPictureUrl(), 328, 122);
             }
-            Log.i("tag","url-------------"+imageUrlFinal);
             PicassoUtil.handlePic(context, imageUrlFinal, viewHolder.ivPic, 328, 122);
             final String finalImageUrlFinal = imageUrlFinal;
             viewHolder.ivPic.setOnClickListener(new View.OnClickListener() {

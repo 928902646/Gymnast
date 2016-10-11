@@ -5,18 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.gymnast.R;
 import com.gymnast.utils.PicassoUtil;
-import com.gymnast.view.live.customview.BarrageView;
 import com.gymnast.view.live.entity.BarrageViewEntity;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by zzqybyb19860112 on 2016/10/9.
@@ -25,7 +19,8 @@ public class BarrageViewAdapter extends RecyclerView.Adapter {
     Context context;
     List<BarrageViewEntity> barrageList;
 
-    public BarrageViewAdapter(Context context, List<BarrageViewEntity> barrageList) {
+    public
+    BarrageViewAdapter(Context context, List<BarrageViewEntity> barrageList) {
         this.context = context;
         if (barrageList.size()==0){
             this.barrageList=new ArrayList<>();
