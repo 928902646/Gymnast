@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,8 +40,7 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
     Context context;
     List<CircleMainData> mValue;
     private String id,token;
-    private Integer userid;
-
+    int tag=-1;
     public CircleAdminAdapter(Context context, List<CircleMainData> mValue) {
         this.context = context;
         if(mValue.size()==0){
@@ -59,7 +59,7 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
         return new AdminHolder(view);
     }
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if(holder instanceof AdminHolder){
             AdminHolder viewholder=(AdminHolder) holder;
             final CircleMainData circleMainData = mValue.get(position);
@@ -72,6 +72,7 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
                 try{ int admin=Integer.parseInt(str);
                     int userId=circleMainData.getUserId();
                     if(admin == userId){
+                        tag=position;
                         viewholder.circle_admin.setVisibility(View.VISIBLE);
                     }
                 }catch (Exception e){e.printStackTrace();}
@@ -98,33 +99,59 @@ public class CircleAdminAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View view) {
                             new Thread(new Runnable() {
+                                String adminIds;
                                 @Override
                                 public void run() {
-                                    int circle_id= circleMainData.getCircleId();
-                                    String adminIds=String.valueOf(userid);
-                                    String uri= API.BASE_URL+"/v1/circle/setAdminIds";
-                                    HashMap<String,String> params=new HashMap<>();
-                                    params.put("token",token);
-                                    params.put("accountId",id);
-                                    //   params.put("adminIds",AdminIds+","+adminIds);
-                                    // params.put("adminIds",userId+"");
-                                    params.put("circleId",circle_id+"");
-                                    String result= PostUtil.sendPostMessage(uri,params);
-                                    Activity activity=(Activity)context;
-                                    activity.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(context,"管理员设置成功",Toast.LENGTH_SHORT).show();
-                                            notifyDataSetChanged();
+                                    try {
+                                        int circle_id= circleMainData.getCircleId();
+                                        String admin=String.valueOf(circleMainData.getUserId());
+                                        String uri= API.BASE_URL+"/v1/circle/setAdminIds";
+                                        HashMap<String,String> params=new HashMap<>();
+                                        params.put("token",token);
+                                        params.put("accountId",id);
+                                        List<String> AdminIds=circleMainData.getAdminIds();
+                                        Log.e("AdminIds",AdminIds+"");
+                                        if(AdminIds!=null&&AdminIds.size()!=0){
+                                            String str= StringUtil.listToString(AdminIds);
+                                            adminIds=str+","+admin;
+                                            params.put("adminIds",adminIds);
+                                        }else {
+                                            params.put("adminIds",admin);
                                         }
-                                    });
+                                        params.put("circleId",circle_id+"");
+                                        String result=PostUtil.sendPostMessage(uri,params);
+
+                                        JSONObject obj=new JSONObject(result);
+                                        if(obj.getInt("state")==200){
+                                            String url=API.BASE_URL+"/v1/circle/getOne/";
+                                            HashMap<String,String> par=new HashMap<String, String>();
+                                            par.put("circleId",circle_id+"");
+                                            par.put("accountId",id+"");
+                                            String res= GetUtil.sendGetMessage(url,par);
+                                            JSONObject object=new JSONObject(res);
+                                            JSONObject data = object.getJSONObject("data");
+                                            JSONObject circle=data.getJSONObject("circle");
+                                            String circleAdminIds=circle.getString("adminIds");
+                                            List<String>  adminlist = Arrays.asList(circleAdminIds.split(","));
+                                            circleMainData.setAdminIds(adminlist);
+
+                                            Activity activity=(Activity)context;
+                                            activity.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    notifyDataSetChanged();
+                                                }
+                                            });
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }){}.start();
                             dialog.dismiss();
                         }
-
-
                     });
+                    notifyDataSetChanged();
                     dialog.setContentView(v, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT));
                     Window window = dialog.getWindow();

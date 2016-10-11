@@ -2,6 +2,8 @@ package com.gymnast.utils;
 
 import android.util.Log;
 
+import java.util.List;
+
 /**
  * Created by zzqybyb19860112 on 2016/8/25.
  */
@@ -41,5 +43,21 @@ public class StringUtil {
     }
     public static String isNullNickName(String tempString){
         return tempString == null ||tempString.equals("")||tempString.equals("null")?"":tempString;
+    }
+    public static String listToString(List<String> stringList){
+        if (stringList==null) {
+            return null;
+        }
+        StringBuilder result=new StringBuilder();
+        boolean flag=false;
+        for (String string : stringList) {
+            if (flag) {
+                result.append(",");
+            }else {
+                flag=true;
+            }
+            result.append(string);
+        }
+        return result.toString();
     }
 }
