@@ -166,6 +166,7 @@
                 android:button="@drawable/promulgate_icon_checkbox"
                 android:gravity="center_vertical"
                 android:layout_gravity="center"
+                android:checked="true"
                 />
             <RadioButton
                 android:id="@+id/buttonDown"

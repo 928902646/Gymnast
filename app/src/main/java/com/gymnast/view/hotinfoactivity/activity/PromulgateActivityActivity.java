@@ -356,6 +356,10 @@ public class PromulgateActivityActivity extends ImmersiveActivity  implements Vi
             public void afterTextChanged(Editable s) {
             }
         });
+        if(!myRadioGroup.isClickable()){
+            type=0;
+        }else {
+        }
         myRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
 
@@ -595,17 +599,10 @@ public class PromulgateActivityActivity extends ImmersiveActivity  implements Vi
                         try {
                             String uri= API.BASE_URL+"/v1/upload";
                             String result=UploadUtil.uploadFile2(uri, fileName);
-                            JSONObject object= null;
-                            object = new JSONObject(result);
+                            JSONObject object = new JSONObject(result);
                             JSONObject data=object.getJSONObject("data");
                             String newUrl = URI.create(data.getString("url")).getPath();
                             imageUrl=newUrl;
-                            /*String uri2= API.BASE_URL+"/v1/account/info/edit";
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("token", token);
-                            params.put("account_id", id);
-                            params.put("avatar", newUrl);
-                            String result1 = PostUtil.sendPostMessage(uri2, params);*/
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -632,12 +629,12 @@ public class PromulgateActivityActivity extends ImmersiveActivity  implements Vi
             Thread thread1=new Thread(){
                 @Override
                 public void run() {
-                    String path=UploadUtil.getAbsoluteImagePath(PromulgateActivityActivity.this,originalUri);
-                    picAddress=UploadUtil.getNetWorkImageAddress(path, PromulgateActivityActivity.this);
+                    String path=UploadUtil.getRealFilePath(PromulgateActivityActivity.this,originalUri);
+                    imageUrl=UploadUtil.getNetWorkImageAddress(path, PromulgateActivityActivity.this);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (picAddress!=null){
+                            if (imageUrl!=null){
                                 dialog.dismiss();
                             }
                         }
