@@ -24,11 +24,11 @@ import com.gymnast.utils.PicUtil;
 import com.gymnast.utils.PicassoUtil;
 import com.gymnast.utils.StringUtil;
 import com.gymnast.view.ImmersiveActivity;
-import com.gymnast.view.pack.view.MyConcernFragment;
 import com.gymnast.view.personal.adapter.PersonalAdapter;
 import com.gymnast.view.personal.contact.PersonFenSiActivity;
 import com.gymnast.view.personal.contact.PersonalActivityContact;
 import com.gymnast.view.personal.fragment.CircleListFragment;
+import com.gymnast.view.personal.fragment.MyCollectionFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,7 +87,6 @@ public class PersonalActivity extends ImmersiveActivity {
         Intent intent = getIntent();
         int page=intent.getIntExtra("page",0);
         vp.setCurrentItem(page);
-        tab.setVisibility(View.GONE);
     }
     @Override
     protected void onResume() {
@@ -202,10 +201,10 @@ public class PersonalActivity extends ImmersiveActivity {
     }
     private void initview() {
         mTitle.add("我的圈子");
-     //   mTitle.add("我的收藏");
+         mTitle.add("我的收藏");
     //  mTitle.add("我的钱包");
         mFragment.add(new CircleListFragment());
-      //  mFragment.add(new MyConcernFragment());
+        mFragment.add(new MyCollectionFragment());
        // mFragment.add(new WalletFragmengt());
         back.setOnClickListener(new View.OnClickListener() {
             @Override
