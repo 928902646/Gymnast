@@ -158,7 +158,6 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="12dp"
                 android:id="@+id/ivPrise"
-                android:src="@mipmap/icon_a_barrage_of_praise"
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
         <LinearLayout

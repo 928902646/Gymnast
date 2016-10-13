@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -64,7 +65,6 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
     private GridView mGridview;
     private Dialog cameradialog;
     LinearLayout llShareToFriends,llShareToWeiChat,llShareToQQ,llShareToQQZone,llShareToMicroBlog;
-    private int id;
     public static int shareNumber=0;//分享次数
     private SimpleDateFormat sdf =new SimpleDateFormat("MM月-dd日 HH:mm");
     View view;
@@ -76,31 +76,44 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
     int notifyPos=0;
     SwipeRefreshLayout reflesh;
     String firstCommenter="";
-    boolean isPrised=false;
+    boolean isPraised=false;
     String token,nowUserId,nickName,avatar;
     int dynamicID;
     List<CallBackEntity> commentList=new ArrayList<>();
     CallBackAdapter commentAdapter;
     public static boolean isComment=true;
-    public static final int HANDLE_COMMENT_DATA=5;
-    public static final int HANDLE_MAIN_USER_BACK=6;
-    public static final int HANDLE_PRISE=7;
-    public static final int HANDLE_CANCEL_PRISE=8;
-    public static final int HANDLE_UNKNOWN_ERROR=9;
+    public static final int HANDLE_COMMENT_DATA=1;
+    public static final int HANDLE_MAIN_USER_BACK=2;
+    public static final int HANDLE_PRAISE=3;
+    public static final int HANDLE_CANCEL_PRAISE=4;
+    public static final int HANDLE_UNKNOWN_ERROR=5;
+    public static final int HANDLE_START_PRAISE=6;
     static ArrayList<CallBackDetailEntity> detailMSGs;
     ArrayList<String> userABC=new ArrayList<>();
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case HANDLE_START_PRAISE:
+                    boolean isStartPraised= (boolean) msg.obj;
+                    ivSendDynamic.setVisibility(View.VISIBLE);
+                    if (isStartPraised){
+                        ivSendDynamic.setImageResource(R.mipmap.like_pressed);
+                    }else {
+                        ivSendDynamic.setImageResource(R.mipmap.like_normal);
+                    }
+                    ivSendDynamic.invalidate();
+                    break;
                 case HANDLE_UNKNOWN_ERROR:
                     Toast.makeText( PersonalDynamicDetailActivity.this,"未知错误，请重试！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_CANCEL_PRISE:
+                case HANDLE_CANCEL_PRAISE:
                     Toast.makeText( PersonalDynamicDetailActivity.this,"已取消点赞！",Toast.LENGTH_SHORT).show();
+                    ivSendDynamic.setImageResource(R.mipmap.like_normal);
                     break;
-                case HANDLE_PRISE:
+                case HANDLE_PRAISE:
                     Toast.makeText( PersonalDynamicDetailActivity.this,"已点赞！",Toast.LENGTH_SHORT).show();
+                    ivSendDynamic.setImageResource(R.mipmap.like_pressed);
                     break;
                 case HANDLE_MAIN_USER_BACK:
                     commentAdapter.notifyItemChanged(notifyPos);
@@ -242,6 +255,10 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
                 String uri = API.BASE_URL + "/v1/concern/getOne";
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("concernId", dynamicID + "");
+                if (nowUserId!=null){
+                    params.put("accountId",nowUserId);
+                }
+                Log.i("tag","dynamicID="+dynamicID);
                 String result = GetUtil.sendGetMessage(uri, params);
                 try {
                     JSONObject object = new JSONObject(result);
@@ -251,7 +268,8 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
                         JSONObject concern = data.getJSONObject("concern");
                         circleUserID=concern.getInt("userId");
                         JSONObject userVo = concern.getJSONObject("userVo");
-                        String isCollection = data.getString("isCollection");
+                        boolean isCollection = data.getBoolean("isCollection");
+                        isPraised = data.getBoolean("isZan");
                         final long createTime = concern.getLong("createTime");
                         final String topicTitle = concern.getString("topicTitle");
                         final String topicContent = concern.getString("topicContent");
@@ -268,6 +286,10 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
                                 imageURL.add(API.IMAGE_URL + imageUrls[j]);
                             }
                         }
+                        Message message=new Message();
+                        message.obj=isPraised;
+                        message.what=HANDLE_START_PRAISE;
+                        handler.sendMessage(message);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -284,7 +306,6 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
                             }
                         });
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -415,12 +436,12 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
                     JSONObject obj=new JSONObject(result);
                     int state=obj.getInt("state");
                     if (state==200){
-                        if (isPrised){
-                            handler.sendEmptyMessage(HANDLE_CANCEL_PRISE);
+                        if (isPraised){
+                            handler.sendEmptyMessage(HANDLE_CANCEL_PRAISE);
                         }else {
-                            handler.sendEmptyMessage(HANDLE_PRISE);
+                            handler.sendEmptyMessage(HANDLE_PRAISE);
                         }
-                        isPrised=!isPrised;
+                        isPraised=!isPraised;
                     }else {
                         handler.sendEmptyMessage(HANDLE_UNKNOWN_ERROR);
                     }

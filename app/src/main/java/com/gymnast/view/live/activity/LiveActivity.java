@@ -114,24 +114,34 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
     public static final int HANDLE_NEWUSER_OUT=10;
     public static final int HANDLE_BARRAGE_BASE_DATA=11;
     public static final int HANDLE_UNKNOWN_ERROR=12;
-    public static final int HANDLE_CANCEL_PRISE=13;
-    public static final int HANDLE_PRISE=14;
+    public static final int HANDLE_CANCEL_PRAISE=13;
+    public static final int HANDLE_PRAISE=14;
+    public static final int HANDLE_START_PRAISE_STATUS=15;
     Handler handler=new Handler(){
         @Override
         public void handleMessage(final Message msg) {
             switch (msg.what){
-                case HANDLE_UNKNOWN_ERROR:
+                case HANDLE_UNKNOWN_ERROR://点赞的不明错误
                     Toast.makeText( LiveActivity.this,"未知错误，请重试！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_CANCEL_PRISE:
-                    ivPrise.setImageResource(R.mipmap.like_pressed);
+                case HANDLE_START_PRAISE_STATUS://初始化点赞情况
+                    boolean isStartPraised= (boolean) msg.obj;
+                    if (isStartPraised){
+                        ivPrise.setImageResource(R.mipmap.like_pressed);
+                    }else {
+                        ivPrise.setImageResource(R.mipmap.like_normal);
+                    }
+                    ivPrise.invalidate();
+                    break;
+                case HANDLE_CANCEL_PRAISE://用户取消点赞
+                    ivPrise.setImageResource(R.mipmap.like_normal);
                     Toast.makeText( LiveActivity.this,"已取消点赞！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_PRISE:
-                    ivPrise.setImageResource(R.mipmap.like_normal);
+                case HANDLE_PRAISE://用户点赞
+                    ivPrise.setImageResource(R.mipmap.like_pressed);
                     Toast.makeText( LiveActivity.this,"已点赞！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_BARRAGE_BASE_DATA:
+                case HANDLE_BARRAGE_BASE_DATA://初始化历史弹幕数据
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(LiveActivity.this);
                     rvBarrage.setLayoutManager(layoutManager);
                     if (barrageList.size()<=3){
@@ -145,15 +155,17 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     rvBarrage.setAdapter(barrageViewAdapter);
                     barrageViewAdapter.notifyDataSetChanged();
                     break;
-                case HANDLE_NEWUSER_IN:
-                    String nickNameIn= (String) msg.obj;
+                case HANDLE_NEWUSER_IN://新用户进入直播室
+                    String nickNameIn= ( (String) msg.obj).split("@")[1];
+                    Log.i("tag",msg.obj+"-------OBJ-----IN");
                     Toast.makeText(LiveActivity.this,"用户"+nickNameIn+"进来了",Toast.LENGTH_SHORT).show();
                     peopleNumber+=1;
                     tvOnlineNumber.setText(peopleNumber + "人在线");
                     tvOnlineNumber.invalidate();
                     break;
-                case HANDLE_NEWUSER_OUT:
-                    String nickNameOut= (String) msg.obj;
+                case HANDLE_NEWUSER_OUT://用户离开直播室
+                    Log.i("tag",msg.obj+"-------OBJ----------OUT");
+                    String nickNameOut=( (String) msg.obj).split("@")[1];
                     Toast.makeText(LiveActivity.this,"用户"+nickNameOut+"离开了",Toast.LENGTH_SHORT).show();
                     peopleNumber-=1;
                     tvOnlineNumber.setText(peopleNumber + "人在线");
@@ -343,19 +355,19 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
             public void onMessageReceived(final List<EMMessage> messages) {
                 for (EMMessage msg : messages) {
                     if (msg.getType().equals(EMMessage.Type.TXT)) {
-                        if (!msg.getFrom().equals(liveOwnerId)){
+                        if (!msg.getFrom().equals(liveOwnerId)){//一般用户收到文本信息
                                 String content = msg.getBody().toString();
                                 content = content.substring(5, content.length() - 1);
                                 String photoUrl =msg.getStringAttribute("photoUrl", null);
-                            if (photoUrl.equals("A8F6C870C92E4D672212E58A089DEEC9")){
+                            if (content.equals("A8F6C870C92E4D672212E58A089DEEC9")){
                                 Message message=new Message();
                                 message.what=HANDLE_NEWUSER_IN;
-                                message.obj=content;
+                                message.obj=photoUrl;
                                 handler.sendMessage(message);
-                            }else if (photoUrl.equals("F00647B3C94654F3BDE6E3C5944ABADD")){
+                            }else if (content.equals("F00647B3C94654F3BDE6E3C5944ABADD")){
                                 Message message=new Message();
                                 message.what=HANDLE_NEWUSER_OUT;
-                                message.obj=content;
+                                message.obj=photoUrl;
                                 handler.sendMessage(message);
                             }else {
                                 Log.i("tag", "收到弹幕消息:" + content);
@@ -371,19 +383,17 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                         }else {
                             String text=msg.getBody().toString();
                             text=text.substring(5,text.length()-1);
-                            Log.i("tag","AAAAAA-----------"+text);
-                            String stopCommand =msg.getStringAttribute("photoUrl", null);
-                            Log.i("tag","BBBBBB-----------"+stopCommand);
-                            if (stopCommand!=null){
-                                if(stopCommand.equals("1B643AEC5CD0034236DDE2E1465D366D")){
+                            String photoUrl =msg.getStringAttribute("photoUrl", null);
+                            if (text!=null){
+                                if(text.equals("1B643AEC5CD0034236DDE2E1465D366D")){
                                     Log.i("tag","收到结束指令");
                                     handler.sendEmptyMessage(HANDLE_END_LIVE);
                                 }
                             }else {
                                 LiveMessage message=new LiveMessage();
                                 message.setPictureUrl("null");
-                                Log.i("tag","getText------"+avatar);
-                                message.setIconUrl(mainPhotoUrl);
+                                Log.i("tag","getText------"+photoUrl);
+                                message.setIconUrl(photoUrl);
                                 message.setTimeUntilNow("刚刚");
                                 message.setCreateTime(System.currentTimeMillis());
                                 message.setContent(text);
@@ -394,8 +404,9 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                         }
                     }else if (msg.getType().equals(EMMessage.Type.IMAGE)){
                         EMImageMessageBody body = (EMImageMessageBody)msg.getBody();
+                        String photoUrl =msg.getStringAttribute("photoUrl", null);
                         LiveMessage message=new LiveMessage();
-                        message.setIconUrl(mainPhotoUrl);
+                        message.setIconUrl(photoUrl);
                         message.setTimeUntilNow("刚刚");
                         message.setPictureUrl(body.getRemoteUrl());
                         Log.i("tag", "收到消息！get-----" +body.getRemoteUrl());
@@ -469,8 +480,9 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     String uri = API.BASE_URL + "/v1/live/get";
                     HashMap<String, String> params = new HashMap<>();
                     params.put("id", liveId + "");
-                    Log.i("tag","liveID="+liveId);
+                    Log.i("tag", "liveID=" + liveId);
                     params.put("veiwUserId", userId + "");
+                    Log.i("tag", "userId=" + userId);
                     String result = PostUtil.sendPostMessage(uri, params);
                     JSONObject object=new JSONObject(result);
                     JSONObject data=object.getJSONObject("data");
@@ -478,6 +490,10 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     peopleNumber=data.getInt("watchNumber");
                     isCollected=data.getBoolean("isColl");
                     isPraised=data.getBoolean("isZan");
+                    Message message=new Message();
+                    message.what=HANDLE_START_PRAISE_STATUS;
+                    message.obj=isPraised;
+                    handler.sendMessage(message);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -555,9 +571,9 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     public void run() {
                         try {
                              EMClient.getInstance().groupManager().joinGroup(groupId);//
-                            EMMessage message = EMMessage.createTxtSendMessage(nickName, groupId);
+                            EMMessage message = EMMessage.createTxtSendMessage("A8F6C870C92E4D672212E58A089DEEC9", groupId);
                             // 增加自己特定的属性
-                            message.setAttribute("photoUrl", "A8F6C870C92E4D672212E58A089DEEC9");//进入特殊指令
+                            message.setAttribute("photoUrl",avatar+"@"+nickName );//进入特殊指令
                             message.setFrom(userId);
                             message.setChatType(EMMessage.ChatType.GroupChat);
                             EMClient.getInstance().chatManager().sendMessage(message);
@@ -783,7 +799,6 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                 break;
         }
     }
-private boolean isPrised=false;
     private void priseLive() {
         new Thread(){
             @Override
@@ -799,12 +814,12 @@ private boolean isPrised=false;
                     JSONObject obj=new JSONObject(result);
                     int state=obj.getInt("state");
                     if (state==200){
-                        if (isPrised){
-                            handler.sendEmptyMessage(HANDLE_CANCEL_PRISE);
+                        if (isPraised){
+                            handler.sendEmptyMessage(HANDLE_CANCEL_PRAISE);
                         }else {
-                            handler.sendEmptyMessage(HANDLE_PRISE);
+                            handler.sendEmptyMessage(HANDLE_PRAISE);
                         }
-                        isPrised=!isPrised;
+                        isPraised=!isPraised;
                     }else {
                         handler.sendEmptyMessage(HANDLE_UNKNOWN_ERROR);
                     }
@@ -814,7 +829,6 @@ private boolean isPrised=false;
             }
         }.start();
     }
-
     private void shareToFriends() {
         Toast.makeText(this,"分享到朋友圈！",Toast.LENGTH_SHORT).show();
         shareNumber++;
@@ -997,6 +1011,7 @@ private boolean isPrised=false;
                     EMMessage message = EMMessage.createTxtSendMessage(content, groupId);
                     message.setChatType(EMMessage.ChatType.GroupChat);
                     message.setFrom(liveOwnerId);
+                    message.setAttribute("photoUrl",mainPhotoUrl);
                     message.setMessageStatusCallback(new EMCallBack() {
                         @Override
                         public void onSuccess() {
@@ -1054,12 +1069,13 @@ private boolean isPrised=false;
                         public void run() {
                             String path = UploadUtil.getAbsoluteImagePath(LiveActivity.this, originalUri);
                             imgUrl = API.IMAGE_URL + UploadUtil.getNetWorkImageAddress(path, LiveActivity.this);
-                            LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
+                            String result=LiveUtil.sendLiveMessage(url, tokenAll, liveId, imgUrl, "");
                             try {
-                                LogUtil.i("tag", path + "----直播图片信息上传结果");
+                                LogUtil.i("tag", path + "----直播图片信息上传结果:"+result);
                                 EMMessage message = EMMessage.createImageSendMessage(path, false, groupId);
                                 message.setChatType(EMMessage.ChatType.GroupChat);
                                 message.setFrom(liveOwnerId);
+                                message.setAttribute("photoUrl", mainPhotoUrl);
                                 message.setMessageStatusCallback(new EMCallBack() {
                                     @Override
                                     public void onSuccess() {
@@ -1120,9 +1136,9 @@ private boolean isPrised=false;
                         params.put("id", liveId + "");
                         String result = PostUtil.sendPostMessage(uri, params);
                         Log.i("tag", "end" + result);
-                        EMMessage message = EMMessage.createTxtSendMessage(nickName, groupId);
+                        EMMessage message = EMMessage.createTxtSendMessage("F00647B3C94654F3BDE6E3C5944ABADD", groupId);
                         // 增加自己特定的属性
-                        message.setAttribute("photoUrl", "F00647B3C94654F3BDE6E3C5944ABADD");//退出特殊指令
+                        message.setAttribute("photoUrl", avatar+"@"+nickName);//退出特殊指令
                         message.setFrom(userId);
                         message.setChatType(EMMessage.ChatType.GroupChat);
                         EMClient.getInstance().chatManager().sendMessage(message);

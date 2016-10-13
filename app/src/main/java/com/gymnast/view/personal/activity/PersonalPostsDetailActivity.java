@@ -71,7 +71,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     int notifyPos=0;
     SwipeRefreshLayout reflesh;
     String firstCommenter="";
-    boolean isPrised=false;
     String token,userId,nickName,avatar;
     private int tieZiID,createId;
     List<CallBackEntity> commentList=new ArrayList<>();
@@ -82,8 +81,8 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     public static final int HANDLE_WHOLE_DATA=3;
     public static final int HANDLE_COMMENT_DATA=5;
     public static final int HANDLE_MAIN_USER_BACK=6;
-    public static final int HANDLE_PRISE=7;
-    public static final int HANDLE_CANCEL_PRISE=8;
+    public static final int HANDLE_PRAISE=7;
+    public static final int HANDLE_CANCEL_PRAISE=8;
     public static final int HANDLE_UNKNOWN_ERROR=9;
     static ArrayList<CallBackDetailEntity> detailMSGs;
     ArrayList<String> userABC=new ArrayList<>();
@@ -113,16 +112,23 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                     webView.getSettings().setAppCacheEnabled(true);
                     webView.setWebChromeClient(new WebChromeClient());
                     webView.getSettings().setJavaScriptEnabled(true);
+                    boolean isStartPraised= (boolean) msg.obj;
+                    if (isStartPraised){
+                        ivSendTiezi.setImageResource(R.mipmap.like_pressed);
+                    }else {
+                        ivSendTiezi.setImageResource(R.mipmap.like_normal);
+                    }
+                    ivSendTiezi.invalidate();
                     break;
                 case HANDLE_UNKNOWN_ERROR:
                     Toast.makeText( PersonalPostsDetailActivity.this,"未知错误，请重试！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_CANCEL_PRISE:
-                    ivSendTiezi.setImageResource(R.mipmap.like_pressed);
+                case HANDLE_CANCEL_PRAISE:
+                    ivSendTiezi.setImageResource(R.mipmap.like_normal);
                     Toast.makeText( PersonalPostsDetailActivity.this,"已取消点赞！",Toast.LENGTH_SHORT).show();
                     break;
-                case HANDLE_PRISE:
-                    ivSendTiezi.setImageResource(R.mipmap.like_normal);
+                case HANDLE_PRAISE:
+                    ivSendTiezi.setImageResource(R.mipmap.like_pressed);
                     Toast.makeText( PersonalPostsDetailActivity.this,"已点赞！",Toast.LENGTH_SHORT).show();
                     break;
                 case HANDLE_MAIN_USER_BACK:
@@ -193,6 +199,11 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         avatar = share.getString("Avatar", "");
         tieZiID= getIntent().getIntExtra("TieZiID", 0);
         UserID= getIntent().getIntExtra("UserID", 0);
+        if (userId.equals("")||userId==null){
+            isLogin=false;
+        }else {
+            isLogin=true;
+        }
     }
     private void autoRefresh(){
         InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -295,7 +306,10 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                             }
                         }
                     }
-                    handler.sendEmptyMessage(HANDLE_WHOLE_DATA);
+                    Message message=new Message();
+                    message.what=HANDLE_WHOLE_DATA;
+                    message.obj=isParised;
+                    handler.sendMessage(message);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -398,15 +412,21 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.circle_head:
-                Intent i=new Intent(PersonalPostsDetailActivity.this,PersonalOtherHomeActivity.class);
-                i.putExtra("UserID",createId);
-                startActivity(i);
+                    Intent i=new Intent(PersonalPostsDetailActivity.this,PersonalOtherHomeActivity.class);
+                    i.putExtra("UserID",createId);
+                    startActivity(i);
                 break;
             case R.id.tvSendTieZi:
                 handleSendMSG();
                 break;
             case R.id.ivSendTiezi:
-                priseActive();
+                if (!isLogin){
+                    Toast.makeText(this,"您还没有登录呢，亲！",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this,LoginActivity.class));
+                    finish();
+                }else {
+                    priseActive();
+                }
                 break;
             case R.id.llShareToFriends:
                 shareToFriends();
@@ -458,12 +478,12 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                     JSONObject obj=new JSONObject(result);
                     int state=obj.getInt("state");
                     if (state==200){
-                       if (isPrised){
-                           handler.sendEmptyMessage(HANDLE_CANCEL_PRISE);
+                       if (isParised){
+                           handler.sendEmptyMessage(HANDLE_CANCEL_PRAISE);
                        }else {
-                           handler.sendEmptyMessage(HANDLE_PRISE);
+                           handler.sendEmptyMessage(HANDLE_PRAISE);
                        }
-                        isPrised=!isPrised;
+                        isParised=!isParised;
                     }else {
                         handler.sendEmptyMessage(HANDLE_UNKNOWN_ERROR);
                     }
@@ -481,6 +501,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     public static final int CALL_BACK_TYPE_ONE=1111;
     public static final int CALL_BACK_TYPE_TWO=2222;
     public static int type;
+    private boolean isLogin=true;
     private void handleSendMSG() {
         toNickName=etCallBackTieZi.getHint().toString().trim().substring(2);
         if(!App.isStateOK|token.equals("")){//未登录
@@ -577,7 +598,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
             }
         }, 1000);
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
