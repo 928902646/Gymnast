@@ -68,6 +68,7 @@ public class CircleItemFragment extends Fragment implements SwipeRefreshLayout.O
             }
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_personal_circle,container,false);
@@ -91,7 +92,6 @@ public class CircleItemFragment extends Fragment implements SwipeRefreshLayout.O
         if (data!=null){
             circleId=data.getId();
         }
-        final int finalCircleId = circleId;
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -18,6 +18,16 @@ public class CircleData implements Serializable {
     private int id;
     private boolean concerned;
     private int ismeet;
+    //创建者id
+    private int createId;
+
+    public int getCreateId() {
+        return createId;
+    }
+
+    public void setCreateId(int createId) {
+        this.createId = createId;
+    }
 
     public int getIsmeet() {
         return ismeet;

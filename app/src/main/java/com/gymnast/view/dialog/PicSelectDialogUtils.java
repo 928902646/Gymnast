@@ -45,12 +45,8 @@ public class PicSelectDialogUtils {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-                File out = new File(CURRENT_FILENAME);
-                Uri uri = Uri.fromFile(out);
-                // 获取拍照后未压缩的原图片，并保存在uri路径中
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                Intent intent = new Intent(Intent.ACTION_PICK, null);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image");
                 context.startActivityForResult(intent, IMAGE_OPEN);
                 dialog.dismiss();
                 dialog = null;

@@ -69,7 +69,6 @@
             <TextView
                 android:id="@+id/dynamic_name"
                 style="@style/pack_name"
-                android:text="李娜"
                 android:layout_gravity="center_vertical"
                 />
                 <TextView
@@ -90,7 +89,6 @@
             <TextView
                 android:id="@+id/dynamic_time"
                 android:layout_width="wrap_content"
-                android:text="5月25日\t15:00"
                 android:layout_gravity="center_vertical"
                 android:gravity="right"
                 style="@style/pack_time"

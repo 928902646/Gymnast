@@ -30,7 +30,7 @@ public class StringUtil {
         if (!isNull){
             isFalse=(!tempString.contains(".png"))&&(!tempString.contains(".jpg"))&&(!tempString.contains(".jpeg"))&&(!tempString.contains(".gif"));
         }
-        return isNull||isFalse?"http://image.tiyujia.com/group1/M00/00/00/052YyFfXxMCAd8PZAAAb3AsdeC4844.png":"http://image.tiyujia.com/"+tempString;
+        return isNull||isFalse?"http://image.tiyujia.com/group1/M00/00/0A/052YyFf4Z9CANLLFAALMR1kNvzI190.png":"http://image.tiyujia.com/"+tempString;
     }
     public static String isNullGroupId(String tempString){
         return tempString == null || tempString.equals("") || tempString.equals("null")?"000":tempString;

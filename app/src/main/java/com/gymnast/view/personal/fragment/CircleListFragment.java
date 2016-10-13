@@ -61,6 +61,7 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
                                 CircleData   item=   activityList.get(position);
                                 Intent i=new Intent(getActivity(), PersonalCircleActivity.class);
                                 i.putExtra("CircleId",item.getId());
+                                i.putExtra("createId",item.getCreateId());
                                 startActivity(i);
                             }
                         }
@@ -71,6 +72,9 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
             }
         }
     };
+    private String return_title,return_headImgUrl;
+    private int return_circleItemCount,return_id,createId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_recyclerview,container,false);
@@ -126,21 +130,39 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
                 params.put("accountId",id);
                 String result= GetUtil.sendGetMessage(uri,params);
                 try {
-                    JSONObject  obj=new JSONObject(result);
+                    JSONObject obj=new JSONObject(result);
                     JSONObject data = obj.getJSONObject("data");
-                    JSONArray myCreateCircle = data.getJSONArray("myCreateCircle");
                     if(obj.getInt("state")==200){
+                        JSONArray myCreateCircle=data.getJSONArray("myCreateCircle");
+                        JSONArray myConcernCircle=data.getJSONArray("myConcernCircle");
                         for(int i=0;i<myCreateCircle.length();i++){
                             JSONObject object = myCreateCircle.getJSONObject(i);
-                            String return_title= object.getString("title");
-                            int return_circleItemCount= object.getInt("circleItemCount");
-                            int return_id= object.getInt("id");
-                            String return_headImgUrl= StringUtil.isNullAvatar(object.getString("headImgUrl"));// API.IMAGE_URL+ URI.create(object.getString("headImgUrl")).getPath();
                             CircleData circleData= new CircleData();
+                            return_title= object.getString("title");
+                            return_circleItemCount= object.getInt("circleItemCount");
+                            return_id= object.getInt("id");
+                            createId=object.getInt("createId");
+                            return_headImgUrl= StringUtil.isNullAvatar(object.getString("headImgUrl"));// API.IMAGE_URL+ URI.create(object.getString("headImgUrl")).getPath();
                             circleData.setTitle(return_title);
                             circleData.setHeadImgUrl(return_headImgUrl);
                             circleData.setCircleItemCount(return_circleItemCount);
                             circleData.setId(return_id);
+                            circleData.setCreateId(createId);
+                            activityList.add(circleData);
+                        }
+                        for(int i=0;i<myConcernCircle.length();i++){
+                            CircleData circleData= new CircleData();
+                            JSONObject object = myConcernCircle.getJSONObject(i);
+                            return_title= object.getString("title");
+                            return_circleItemCount= object.getInt("circleItemCount");
+                            return_id= object.getInt("id");
+                            createId=object.getInt("createId");
+                            return_headImgUrl= StringUtil.isNullAvatar(object.getString("headImgUrl"));// API.IMAGE_URL+ URI.create(object.getString("headImgUrl")).getPath();
+                            circleData.setTitle(return_title);
+                            circleData.setHeadImgUrl(return_headImgUrl);
+                            circleData.setCircleItemCount(return_circleItemCount);
+                            circleData.setId(return_id);
+                            circleData.setCreateId(createId);
                             activityList.add(circleData);
                         }
                         handler.sendEmptyMessage(HANFLE_DATA_UPDATE);

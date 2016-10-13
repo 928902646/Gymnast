@@ -18,16 +18,13 @@
         >
 
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ImageView
         android:id="@+id/circle_head"
         style="@style/pack_RoundedImageView"
-        app:riv_oval="true"
-        android:background="@color/background"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:riv_tile_mode="clamp"
         android:layout_gravity="center"
+        android:background="@color/background"
         />
 
     <TextView

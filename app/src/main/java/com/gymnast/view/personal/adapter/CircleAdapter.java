@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.gymnast.R;
@@ -158,7 +159,7 @@ public class CircleAdapter extends RecyclerView.Adapter implements Filterable {
     }
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.circle_head)
-        com.makeramen.roundedimageview.RoundedImageView circle_head;
+        ImageView circle_head;
         @BindView(R.id.circle_name)
         TextView circle_name;
         @BindView(R.id.number)

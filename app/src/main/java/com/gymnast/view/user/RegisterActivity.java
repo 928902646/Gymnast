@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.gymnast.R;
+import com.gymnast.data.net.API;
 import com.gymnast.data.net.Result;
 import com.gymnast.data.user.UserService;
 import com.gymnast.data.user.UserServiceImpl;
@@ -38,7 +39,12 @@ import com.gymnast.utils.StorePhotosUtil;
 import com.gymnast.utils.UploadUtil;
 import com.gymnast.view.ImmersiveActivity;
 import com.gymnast.view.home.HomeActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.net.URI;
 import java.util.Calendar;
 import java.util.Locale;
 import rx.Observer;
@@ -88,7 +94,7 @@ public class RegisterActivity extends ImmersiveActivity {
   private TextView camera,gallery,cancel;
   private String fileName;
   private Bitmap bitmap;
-  private String picAddress=null;
+  private String avatar;
   private ImageView back;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -220,7 +226,7 @@ public class RegisterActivity extends ImmersiveActivity {
           return;
         }
         Subscription s =
-                userService.register(phone, pwd, nickname, null).subscribeOn(Schedulers.io())//
+                userService.register(phone, pwd, nickname, avatar).subscribeOn(Schedulers.io())//
                         .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
                   @Override public void onCompleted() {
                   }
@@ -255,8 +261,6 @@ public class RegisterActivity extends ImmersiveActivity {
       }
     });
   }
-
-
   private void switchToRegister() {
     registerVerify.setVisibility(View.GONE);
     registerComplete.setVisibility(View.VISIBLE);
@@ -265,11 +269,31 @@ public class RegisterActivity extends ImmersiveActivity {
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode==PIC_FROM_CAMERA&&resultCode == Activity.RESULT_OK) {
-      Bitmap bitmap = getSmallBitmap(fileName);
+      final Bitmap bitmap = getSmallBitmap(fileName);
       // 这里是先压缩质量，再调用存储方法
       new StorePhotosUtil(bitmap, fileName);
       if (bitmap!=null) {
-        registerSetHead.setImageBitmap(bitmap);
+        new Thread(new Runnable() {
+          @Override
+          public void run() {
+            try {
+              String uri= API.BASE_URL+"/v1/upload";
+              String result=UploadUtil.uploadFile2(uri, fileName);
+              JSONObject object = new JSONObject(result);
+              JSONObject data=object.getJSONObject("data");
+              String newUrl = URI.create(data.getString("url")).getPath();
+              avatar=newUrl;
+              runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                  registerSetHead.setImageBitmap(bitmap);
+                }
+              });
+            } catch (JSONException e) {
+              e.printStackTrace();
+            }
+          }
+        }).start();
       }
     } if (requestCode == 1000  &&  data != null){
       // 外界的程序访问ContentProvider所提供数据 可以通过ContentResolver接口
@@ -285,12 +309,12 @@ public class RegisterActivity extends ImmersiveActivity {
       Thread thread1=new Thread(){
         @Override
         public void run() {
-          String path= UploadUtil.getAbsoluteImagePath(RegisterActivity.this,originalUri);
-          picAddress=UploadUtil.getNetWorkImageAddress(path, RegisterActivity.this);
+          String path= UploadUtil.getRealFilePath(RegisterActivity.this,originalUri);
+          avatar=UploadUtil.getNetWorkImageAddress(path, RegisterActivity.this);
           runOnUiThread(new Runnable() {
             @Override
             public void run() {
-              if (picAddress!=null){
+              if (avatar!=null){
                 dialog.dismiss();
               }
             }

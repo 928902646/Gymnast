@@ -30,6 +30,7 @@ import java.util.zip.Inflater;
  * Created by Cymbi on 2016/10/12.
  */
 public class CollectionAdapter extends RecyclerView.Adapter {
+    private OnItemClickListener onItemClickListener;
     Context context;
     List<CollectionData> mValues=new ArrayList<>();
     private SimpleDateFormat sdf =new SimpleDateFormat("MM月-dd日 HH:mm");
@@ -51,19 +52,20 @@ public class CollectionAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (mValues.size() <= 0) {
             return VIEW_TYPE;
+        }else {
+            CollectionData data=mValues.get(position);
+            int model=data.getModel();
+            if(model==1){return ACTIVITY;}
+            else if (model==2){return LIVE;}
+            else if (model==4){return CIRCLE;}
+            else if(model==5){return Dynamic;}
         }
-        CollectionData data=mValues.get(position);
-        int model=data.getModel();
-        if(model==1){return ACTIVITY;}
-        else if (model==2){return LIVE;}
-        else if (model==4){return CIRCLE;}
-        else if(model==5){return Dynamic;}
         return 0;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater mInflater = LayoutInflater.from(context);
         View view;
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if(viewType==ACTIVITY){
@@ -86,19 +88,19 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             view.setLayoutParams(lp);
             return new LiveViewHolder(view);
         }
-        view=mInflater.inflate(R.layout.empty_view,parent,false);
-        view.setLayoutParams(lp);
-        return new empty(view);
+            view=mInflater.inflate(R.layout.empty_view,parent,false);
+            view.setLayoutParams(lp);
+            return new empty(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         SharedPreferences share = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         final String token=share.getString("Token","");
         if(holder instanceof ActivityViewHolder){
             ActivityViewHolder viewHolder= (ActivityViewHolder)holder;
             final CollectionData data= mValues.get(position);
-            PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(data.getImgUrl().get(0)), 320, 320),viewHolder.activity_imgUrl,320,320);
+            PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(data.getImgUrls()), 320, 320),viewHolder.activity_imgUrl,320,320);
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(data.getAvatar()), 320, 320),viewHolder.activity_head,320,320);
             viewHolder.activity_content.setText("     "+data.getDescContent());
             viewHolder.activity_zan.setText(data.getZanCount()+"");
@@ -114,6 +116,7 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(data.getAvatar()), 320, 320),viewHolder.circle_head,320,320);
             viewHolder.circle_content.setText(data.getDescContent());
             viewHolder.circle_zan.setText(data.getZanCount()+"");
+            viewHolder.circle_look.setText(data.getPageViews()+"人浏览");
             viewHolder.circle_name.setText(data.getNickname());
             viewHolder.circle_comment.setText(data.getCommentCount()+"");
             viewHolder.circle_time.setText(sdf.format(new Date(data.getCreateTime()))+"");
@@ -133,7 +136,7 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             PicassoUtil.handlePic(context, PicUtil.getImageUrlDetail(context, StringUtil.isNullAvatar(data.getAvatar()), 320, 320),viewHolder.star_head,320,320);
             viewHolder.star_content.setText("     "+data.getDescContent());
             viewHolder.star_look.setText(data.getPageViews()+"人浏览");
-            viewHolder.star_name.setText(data.getPageViews());
+            viewHolder.star_name.setText(data.getNickname());
             viewHolder.star_type.setText(data.getAuthInfo());
             viewHolder.star_msg.setText(data.getCommentCount()+"");
             viewHolder.star_time.setText(sdf.format(new Date(data.getCreateTime()))+"");
@@ -171,12 +174,26 @@ public class CollectionAdapter extends RecyclerView.Adapter {
                 }
             });
         }
-
+        if(onItemClickListener!=null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //注意，这里的position不要用上面参数中的position，会出现位置错乱\
+                    onItemClickListener.OnItemClickListener(holder.itemView, holder.getLayoutPosition());
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues.size()>0?mValues.size():1;
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+    public interface OnItemClickListener {
+        void OnItemClickListener(View view, int position);
     }
 
     class empty extends RecyclerView.ViewHolder{
@@ -184,7 +201,6 @@ public class CollectionAdapter extends RecyclerView.Adapter {
             super(itemView);
         }
     }
-
     class ActivityViewHolder extends RecyclerView.ViewHolder{
         private final ImageView activity_head,activity_imgUrl;
         private final TextView activity_name,activity_title,activity_content,

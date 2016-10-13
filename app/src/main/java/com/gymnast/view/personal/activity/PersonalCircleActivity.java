@@ -86,6 +86,7 @@ public class PersonalCircleActivity extends ImmersiveActivity implements View.On
         token=share.getString("Token","");
         id = share.getString("UserId","");
         CircleId=getIntent().getIntExtra("CircleId",0);
+        createId=getIntent().getIntExtra("createId",0);
     }
     private void setView() {
         back=(ImageView)findViewById(R.id.personal_back);
@@ -100,6 +101,7 @@ public class PersonalCircleActivity extends ImmersiveActivity implements View.On
         tab=(TabLayout) findViewById(R.id.pack_tab);
         write=(ImageView) findViewById(R.id.personal_write);
         menu=(ImageView) findViewById(R.id.personal_menu);
+        menu.setVisibility(createId==Integer.parseInt(id)?View.VISIBLE:View.GONE);
         tb=(Toolbar)findViewById(R.id.toolbar);
     }
     private void initView() {
@@ -306,7 +308,6 @@ public class PersonalCircleActivity extends ImmersiveActivity implements View.On
                     circleMasterId=circle.getString("circleMasterId");
                     adminIds=circle.getString("adminIds");
                     String return_headImgUrl= StringUtil.isNullImage(circle.getString("headImgUrl"));
-                    createId=circle.getInt("createId");
                     final Bitmap bitmap= PicUtil.getImageBitmap(return_headImgUrl);
                     if(obj.getInt("state")==200){
                         runOnUiThread(new Runnable() {

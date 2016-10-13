@@ -80,7 +80,6 @@
                             android:layout_height="46dp"
                             android:layout_gravity="left"
                             android:scaleType="centerCrop"
-                            android:src="@mipmap/icon"
                             android:layout_marginRight="10dp"
                             app:riv_oval="true"
                             app:riv_tile_mode="clamp"
@@ -96,7 +95,6 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/day_textColor"
                                 android:textSize="15sp"
-                                android:text="李娜"
                                 android:paddingTop="8dp"
                                 />
                             <TextView
@@ -129,7 +127,6 @@
                             />
                         <TextView
                             android:id="@+id/time"
-                            android:text="adsada"
                             android:gravity="center"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"

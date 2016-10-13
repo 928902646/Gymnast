@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/personal_layout">
-    <RelativeLayout
+    <LinearLayout
         style="@style/personal_title_background"
-        android:paddingRight="12dp"
         >
-
         <ImageView
             android:id="@+id/personal_back"
             style="@style/personal_back"
             />
-
         <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:id="@+id/title"
+            android:text="赵伟圈"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="23dp"
             style="@style/personal_title"
             />
 
@@ -21,7 +24,7 @@
             android:id="@+id/personal_write"
             style="@style/personal_back"
             android:src="@mipmap/icon_write"
-            android:layout_toLeftOf="@+id/personal_menu"
+            android:layout_alignParentRight="true"
             />
         <ImageView
             android:id="@+id/personal_menu"
@@ -29,7 +32,7 @@
             android:src="@mipmap/nav_more"
             android:layout_alignParentRight="true"
             />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,43 +101,43 @@
 
             </LinearLayout>
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="14dp"
-    >
-    <TextView
-        android:id="@+id/isConcern"
-        android:layout_width="91dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:layout_marginLeft="17dp"
-        android:background="@drawable/concern"
-        android:textColor="@color/white"
-        />
-    <TextView
-        android:id="@+id/sign"
-        android:layout_width="91dp"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_marginLeft="17dp"
-        android:background="@drawable/concern"
-        android:drawableLeft="@mipmap/icon_sign"
-        android:textColor="@color/white"
-        />
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                >
+                <TextView
+                    android:id="@+id/isConcern"
+                    android:layout_width="91dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:layout_marginLeft="17dp"
+                    android:background="@drawable/concern"
+                    android:textColor="@color/white"
+                    />
+                <TextView
+                    android:id="@+id/sign"
+                    android:layout_width="91dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginLeft="17dp"
+                    android:background="@drawable/concern"
+                    android:drawableLeft="@mipmap/icon_sign"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/background"
-            />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/background"
+        />
 
     <android.support.design.widget.TabLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
