@@ -113,7 +113,6 @@
         <activity android:name=".view.personal.activity.PersonalAllMsgActivity" />
         <activity
             android:name=".view.personal.activity.PersonalPostsDetailActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"
             />
         <activity android:name=".view.personal.activity.PersonalDynamicActivity" />
         <activity android:name=".view.home.view.GuideActivity" />

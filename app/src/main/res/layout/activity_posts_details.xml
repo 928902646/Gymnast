@@ -43,8 +43,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/srlReflesh"
         android:layout_below="@+id/rlTop"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         >
         <android.support.v4.widget.NestedScrollView
@@ -190,16 +190,16 @@
         >
         <EditText
             android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="match_parent"
             android:hint="说点什么吧。。。"
             android:textSize="15sp"
             android:id="@+id/etCallBackTieZi"
             android:background="@null"
-            android:layout_weight="8"
             android:textColor="@color/day_edit_color"
             android:focusable="true"
             android:gravity="center_vertical"
             android:textColorHint="@color/day_edit_hit_color"
-            android:layout_height="match_parent"
             />
         <ImageView
             android:layout_width="0dp"

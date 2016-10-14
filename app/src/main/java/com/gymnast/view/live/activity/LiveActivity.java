@@ -211,6 +211,8 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     recyclerView.invalidate();
                     break;
                 case HANDLE_RECEIVE_TEXT_MESSAGE://普通观众收到文本消息
+                    LiveMessage msgLiveAdd= (LiveMessage) msg.obj;
+                    messageList.add(msgLiveAdd);
                     adapter = new MessageAdapter(LiveActivity.this,messageList);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyItemInserted(messageList.size() - 1);
@@ -357,6 +359,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                     if (msg.getType().equals(EMMessage.Type.TXT)) {
                         if (!msg.getFrom().equals(liveOwnerId)){//一般用户收到文本信息
                                 String content = msg.getBody().toString();
+                            Log.i("tag","TEXT-------content"+content);
                                 content = content.substring(5, content.length() - 1);
                                 String photoUrl =msg.getStringAttribute("photoUrl", null);
                             if (content.equals("A8F6C870C92E4D672212E58A089DEEC9")){
@@ -383,23 +386,26 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
                         }else {
                             String text=msg.getBody().toString();
                             text=text.substring(5,text.length()-1);
+                            Log.i("tag","TEXT-------text----"+text);
                             String photoUrl =msg.getStringAttribute("photoUrl", null);
                             if (text!=null){
                                 if(text.equals("1B643AEC5CD0034236DDE2E1465D366D")){
                                     Log.i("tag","收到结束指令");
                                     handler.sendEmptyMessage(HANDLE_END_LIVE);
+                                }else {
+                                    LiveMessage message=new LiveMessage();
+                                    message.setPictureUrl("null");
+                                    Log.i("tag", "getText------" + photoUrl);
+                                    message.setIconUrl(photoUrl);
+                                    message.setTimeUntilNow("刚刚");
+                                    message.setCreateTime(System.currentTimeMillis());
+                                    message.setContent(text);
+                                    Log.i("tag", "收到消息！text=" + text);
+                                    Message msgToHandler=new Message();
+                                    msgToHandler.what=HANDLE_RECEIVE_TEXT_MESSAGE;
+                                    msgToHandler.obj=message;
+                                    handler.sendMessage(msgToHandler);
                                 }
-                            }else {
-                                LiveMessage message=new LiveMessage();
-                                message.setPictureUrl("null");
-                                Log.i("tag","getText------"+photoUrl);
-                                message.setIconUrl(photoUrl);
-                                message.setTimeUntilNow("刚刚");
-                                message.setCreateTime(System.currentTimeMillis());
-                                message.setContent(text);
-                                Log.i("tag", "收到消息！text=" + text);
-                                messageList.add(message);
-                                handler.sendEmptyMessage(HANDLE_RECEIVE_TEXT_MESSAGE);
                             }
                         }
                     }else if (msg.getType().equals(EMMessage.Type.IMAGE)){
@@ -552,6 +558,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         //判断当前app使用者是否是直播发起人
         tvOnlineNumber.setText(peopleNumber + "人在线");
         tvTabTitle.setText(title);
+        Log.i("tag", "bigPictureUrl-------->" + bigPictureUrl);
         Picasso.with(this).load(bigPictureUrl).into(ivBigPicture);
         switch (user_now){
             case USER_MAIN:

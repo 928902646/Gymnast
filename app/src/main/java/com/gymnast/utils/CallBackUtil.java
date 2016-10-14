@@ -29,6 +29,7 @@ public class CallBackUtil {
                     String uri = API.BASE_URL + "/v1/comment/query/" + comment_type + "/" + comment_id;
                     HashMap<String, String> params = new HashMap<String, String>();
                     String result= GetUtil.sendGetMessage(uri, params);
+                    Log.i("tag","result------->"+result);
                     JSONObject object=new JSONObject(result);
                     JSONArray array=object.getJSONArray("data");
                     for (int i=0;i<array.length();i++){

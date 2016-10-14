@@ -58,8 +58,6 @@ import java.util.List;
  * Created by Cymbi on 2016/9/2.
  */
 public class PersonalDynamicDetailActivity extends ImmersiveActivity implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener,View.OnLayoutChangeListener {
-
-
     private ImageView mPersonal_menu,personal_back,mDynamic_head,ivClose;
     private TextView mDynamic_name,mDynamic_time,mDynamic_Title,mDynamic_context,star_type,tvCollect,tvReport,tvDelete, tvSpacial,tvTop;
     private GridView mGridview;

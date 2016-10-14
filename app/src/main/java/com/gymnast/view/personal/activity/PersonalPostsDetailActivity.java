@@ -163,9 +163,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                     });
                     break;
             }}};
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +173,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         getData();
         getPageView();
         setCallBackView();
-        initView();
         setListeners();
     }
     private void getPageView() {
@@ -235,8 +231,11 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         tvSpacial.setOnClickListener(this);
         tvTop.setOnClickListener(this);
         ivClose.setOnClickListener(this);
-    }
-    private void initView() {
+        tvSendTieZi.setOnClickListener(this);
+        ivSendTiezi.setOnClickListener(this);
+        circle_head.setOnClickListener(this);
+        reflesh.setOnRefreshListener(this);
+        etCallBackTieZi.addTextChangedListener(new MyTextWatcher(tvSendTieZi, ivSendTiezi, etCallBackTieZi));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -348,11 +347,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         tvTop= (TextView) view.findViewById(R.id.tvTop);
         tvSpacial= (TextView) view.findViewById(R.id.tvSpacial);
         ivClose= (ImageView) view.findViewById(R.id.ivClose);
-        tvSendTieZi.setOnClickListener(this);
-        ivSendTiezi.setOnClickListener(this);
-        circle_head.setOnClickListener(this);
-        reflesh.setOnRefreshListener(this);
-        etCallBackTieZi.addTextChangedListener(new MyTextWatcher(tvSendTieZi, ivSendTiezi, etCallBackTieZi));
     }
     private void shareToFriends() {
         Toast.makeText(this, "分享到朋友圈！", Toast.LENGTH_SHORT).show();
@@ -554,7 +548,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                                 autoRefresh();
                             }else {//1号类型回复
                                 int commentID = commentList.get(notifyPos).getCommentID();
-                                etCallBackTieZi.setText("");
                                 CallBackUtil.handleBack(token, commentID, Integer.valueOf(userId), -1, comment, detailMSGs, handler, HANDLE_MAIN_USER_BACK, nickName, "");
                                 isComment = true;
                                 autoRefresh();
