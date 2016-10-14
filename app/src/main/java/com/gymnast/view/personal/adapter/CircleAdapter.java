@@ -56,7 +56,7 @@ public class CircleAdapter extends RecyclerView.Adapter implements Filterable {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder viewHolder =  (ItemViewHolder)holder;
             CircleData newcirclerdata =  mValues.get(position);
-            PicassoUtil.handlePic(activity, StringUtil.isNullAvatar(newcirclerdata.getHeadImgUrl()),viewHolder.circle_head,320,320);
+            PicassoUtil.handlePic(activity, StringUtil.isNullImage(newcirclerdata.getHeadImgUrl()),viewHolder.circle_head,320,320);
             viewHolder.circle_name.setText(newcirclerdata.getTitle());
             int CircleItem=  newcirclerdata.getCircleItemCount();
             viewHolder.number.setText("("+CircleItem+")");

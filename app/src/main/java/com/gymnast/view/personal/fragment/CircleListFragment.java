@@ -139,7 +139,7 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
                             return_circleItemCount= object.getInt("circleItemCount");
                             return_id= object.getInt("id");
                             createId=object.getInt("createId");
-                            return_headImgUrl= StringUtil.isNullAvatar(object.getString("headImgUrl"));// API.IMAGE_URL+ URI.create(object.getString("headImgUrl")).getPath();
+                            return_headImgUrl= object.getString("headImgUrl");
                             circleData.setTitle(return_title);
                             circleData.setHeadImgUrl(return_headImgUrl);
                             circleData.setCircleItemCount(return_circleItemCount);
@@ -154,7 +154,7 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
                             return_circleItemCount= object.getInt("circleItemCount");
                             return_id= object.getInt("id");
                             createId=object.getInt("createId");
-                            return_headImgUrl= StringUtil.isNullAvatar(object.getString("headImgUrl"));// API.IMAGE_URL+ URI.create(object.getString("headImgUrl")).getPath();
+                            return_headImgUrl= object.getString("headImgUrl");
                             circleData.setTitle(return_title);
                             circleData.setHeadImgUrl(return_headImgUrl);
                             circleData.setCircleItemCount(return_circleItemCount);

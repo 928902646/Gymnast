@@ -289,7 +289,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
                         if (userVo!=null&&!userVo.equals("")){
                             JSONObject userData=new JSONObject(userVo);
                             circleNickName=userData.getString("nickName");
-                            circleAvatar=API.IMAGE_URL+userData.getString("avatar");
+                            circleAvatar=userData.getString("avatar");
                         }
                         String circleVo=item.getString("circleVo");
                         if (circleVo!=null&&!circleVo.equals("")){

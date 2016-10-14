@@ -46,22 +46,7 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
     private String id;
     private ImageView ivCircleMore;
     private RecyclerView rvCircle,rvPosts;
-    private ViewPager vpBanner;
-    //统计下载了几张图片
-    int n=0;
-    //统计当前viewpager轮播到第几页
-    int p=0;
-    //准备好网络图片的地址
     private List<String> imageUrlList=new ArrayList<>();
-    ArrayList<ImageView> vpList = new ArrayList<ImageView>();
-    //控制图片是否开始轮播的开关,默认关的
-    private boolean isStart=false;
-    //开始图片轮播的线程
-    private BannerStart t;
-    //存放代表viewpager播到第几张的小圆点
-    private LinearLayout ll_tag;
-    //存储小圆点的一维数组
-    private ImageView tag[];
     private String imgUrls;
     private List<ChoicenessData> list=new ArrayList<>();
     private List<PostsData> listdata=new ArrayList<>();
@@ -92,57 +77,11 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
                     });
                     choicenessAdapter.notifyDataSetChanged();
                     Circleadapter.notifyDataSetChanged();
-//                    swipeRefresh.setRefreshing(false);
-                    break;
-                case HANFLE_DATA_VP_START:
-                    n++;
-                    Bitmap bitmaps=PicUtil.getImageBitmap(API.IMAGE_URL+imgUrls);
-                    ImageView iv=new ImageView(getActivity());
-                    iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    iv.setImageBitmap(bitmaps);
-                    //把图片添加到集合里
-                    vpList.add(iv);
-                    //当接收到第三张图片的时候，设置适配器,
-                    if(n==imageUrlList.size()){
-                        vpBanner.setAdapter(new ImageAdapter(getActivity(),vpList));
-                        //创建小圆点
-                        creatTag();
-                        //把开关打开
-                        isStart=true;
-                        t=new BannerStart();
-                        //启动轮播图片线程
-                        t.start();
-                    }
-                    break;
-                case HANFLE_DATA_VP_P:
-                    //接受到的线程发过来的p数字
-                    int page=(Integer) msg.obj;
-                    vpBanner.setCurrentItem(page);
+                    swipeRefresh.setRefreshing(false);
                     break;
             }
         }
     };
-
-
-    protected void creatTag() {
-        tag=new ImageView[imageUrlList.size()];
-        for(int i=0;i<imageUrlList.size();i++){
-
-            tag[i]=new ImageView(getActivity());
-            //第一张图片画的小圆点是白点
-            if(i==0){
-                tag[i].setBackgroundResource(R.mipmap.ic_page_indicator_focused);
-            }else{
-                //其它的画灰点
-                tag[i].setBackgroundResource(R.mipmap.ic_page_indicator);
-            }
-            //设置上下左右的间隔
-            tag[i].setPadding(10, 20, 10, 20);
-            //添加到viewpager底部的线性布局里面
-            ll_tag.addView(tag[i]);
-        }
-
-    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -152,45 +91,7 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
         getcircle();
         getposts();
         getBanner();
-        initView();
         return view;
-    }
-    private void initView() {
-        vpBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                //把当前的页数赋值给P
-                p=position;
-                //得到当前图片的索引,如果图片只有三张，那么只有0，1，2这三种情况
-                int currentIndex=(position%imageUrlList.size());
-                for(int i=0;i<tag.length;i++){
-                    if(i==currentIndex){
-                        tag[i].setBackgroundResource(R.mipmap.ic_page_indicator_focused);
-                    }else{
-                        tag[i].setBackgroundResource(R.mipmap.ic_page_indicator);
-                    }
-                }
-
-            }
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //这个switch语句我注掉了，我觉得这个语句没有问题啊，可是为什么加上以下语句，当用手拉一次viewpager的时候，轮播就停止了，再也恢复不过来了?有人知道吗
-                switch(state){
-                //当页面被手指拉动的时候，暂停轮播
-                 case ViewPager.SCROLL_STATE_DRAGGING:
-                   isStart=false;
-                   break;
-                //当手指拉完松开或者页面自己翻到下一页静止的时候,开始轮播
-                case ViewPager.SCROLL_STATE_IDLE:
-                  isStart=true;
-                   break;
-                 }
-            }
-        });
     }
     private void getBanner() {
         new Thread(new Runnable() {
@@ -263,14 +164,11 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
     private void setview() {
         rvCircle=(RecyclerView)view.findViewById(R.id.auslese_lv_circle);
         rvPosts=(RecyclerView)view.findViewById(R.id.auslese_lv_posts);
-        vpBanner=(ViewPager)view.findViewById(R.id.vpBanner);
-        ll_tag=(LinearLayout)view.findViewById(R.id.ll_tag);
         ivCircleMore=(ImageView)view.findViewById(R.id.ivCircleMore);
         ivCircleMore.setOnClickListener(this);
         swipeRefresh=(SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
-        /*RefreshUtil.refresh(swipeRefresh,getActivity());
-        swipeRefresh.setRefreshing(true);
-        swipeRefresh.setOnRefreshListener(this);*/
+        RefreshUtil.refresh(swipeRefresh,getActivity());
+        swipeRefresh.setOnRefreshListener(this);
     }
     public void getposts() {
         new Thread(new Runnable() {
@@ -326,7 +224,6 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
             }
         }).start();
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -336,39 +233,14 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
                 break;
         }
     }
-
     @Override
     public void onRefresh() {
         if(list.size()!=0||listdata.size()!=0){
-           /* list.clear();
+            list.clear();
             listdata.clear();
             getcircle();
             getposts();
-            getBanner();*/
         }else {
-        }
-    }
-
-    //控制图片轮播
-    class BannerStart extends Thread{
-        @Override
-        public void run() {
-            // TODO Auto-generated method stub
-            super.run();
-            while(isStart){
-                Message message=new Message();
-                message.what=1;
-                message.obj=p;
-                handler.sendMessage(message);
-                try {
-                    //睡眠3秒,在isStart为真的情况下，一直每隔三秒循环
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                p++;
-            }
         }
     }
 }

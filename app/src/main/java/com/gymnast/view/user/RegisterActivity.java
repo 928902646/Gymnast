@@ -151,7 +151,10 @@ public class RegisterActivity extends ImmersiveActivity {
                         Toast.makeText(RegisterActivity.this, "验证码已发送", Toast.LENGTH_SHORT).show();
                         registerNextBtn.setClickable(true);
                       }
-                 //     Log.i("fldy", "===>:onNext" + result.toString());
+                      if (result.state == 500) {
+                        Toast.makeText(RegisterActivity.this, "服务器无响应", Toast.LENGTH_SHORT).show();
+                        registerNextBtn.setClickable(true);
+                      }
                     }
                   });
           mCompositeSubscription.add(s);

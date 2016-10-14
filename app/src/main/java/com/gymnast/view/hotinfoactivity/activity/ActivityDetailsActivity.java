@@ -240,7 +240,7 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
                 HashMap<String,String>params=new HashMap<>();
                 params.put("types",2+"");
                 params.put("typeId",activeID+"");
-                PostUtil.sendPostMessage(uri,params);
+                String result= PostUtil.sendPostMessage(uri,params);
             }
         }).start();
     }

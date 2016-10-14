@@ -68,7 +68,6 @@ public class CircleItemFragment extends Fragment implements SwipeRefreshLayout.O
             }
         }
     };
-
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_personal_circle,container,false);
@@ -111,7 +110,7 @@ public class CircleItemFragment extends Fragment implements SwipeRefreshLayout.O
                         String imgUrl= StringUtil.isNullAvatar(obj.getString("imgUrl"));
                         imgUrl= PicUtil.getImageUrlDetail(getActivity(), imgUrl, 320, 320);
                         String nickname=obj.getString("nickname");
-                        String avatar= StringUtil.isNullAvatar(obj.getString("avatar"));
+                        String avatar= obj.getString("avatar");
                         String circleTitle=obj.getString("circleTitle");
                         int state=obj.getInt("state");
                         int zanCount=obj.getInt("zanCount");

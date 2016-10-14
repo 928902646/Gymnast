@@ -309,6 +309,7 @@ public class JSONParseUtil {
                     long startTime = object.getLong("startTime");
                     int zanCount = object.getInt("zanCount");
                     int msgCount = object.getInt("msgCount");
+                    int pageviews=object.getInt("pageviews");
                     JSONObject objectUser = object.getJSONObject("user");
                     String nickname = objectUser.getString("nickname");
                     int userID = objectUser.getInt("id");
@@ -320,7 +321,7 @@ public class JSONParseUtil {
                     itemDevas.setMsgCount(msgCount);
                     itemDevas.setNickname(nickname);
                     itemDevas.setUserID(userID);
-                    itemDevas.setPageViews(object.getInt("pageviews"));
+                    itemDevas.setPageViews(pageviews);
                     dataList.add(itemDevas);
                 }
             } else {

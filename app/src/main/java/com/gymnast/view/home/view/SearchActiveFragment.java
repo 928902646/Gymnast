@@ -60,6 +60,7 @@ public class SearchActiveFragment extends Fragment implements  SwipeRefreshLayou
         srlSearch.setOnRefreshListener(this);
         return view;
     }
+
     private void initData() {
         ArrayList<String> cacheData= (ArrayList<String>) CacheUtils.readJson(getActivity(), SearchActiveFragment.this.getClass().getName() + ".json");
         if (cacheData==null||cacheData.size()==0) {
@@ -82,13 +83,16 @@ public class SearchActiveFragment extends Fragment implements  SwipeRefreshLayou
     @Override
     public void onRefresh() {
         isRefresh=true;
-        initData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // 停止刷新
-                srlSearch.setRefreshing(false);
-            }
-        }, 1000);
+        if(dataList.size()!=0){
+            dataList.clear();
+            initData();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // 停止刷新
+                    srlSearch.setRefreshing(false);
+                }
+            }, 1000);
+        }
     }
 }
