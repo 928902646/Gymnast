@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.gymnast.view.live.activity.LiveActivity;
 import com.gymnast.view.personal.activity.PersonalDynamicDetailActivity;
 import com.gymnast.view.personal.activity.PersonalPostsDetailActivity;
 import com.gymnast.view.personal.adapter.CollectionAdapter;
+import com.gymnast.view.user.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,6 +110,7 @@ public class MyCollectionFragment extends Fragment implements SwipeRefreshLayout
         token = share.getString("Token",null);
         userId = share.getString("UserId",null);
         setview();
+        initView();
         getdata();
         return view;
     }
@@ -115,8 +118,28 @@ public class MyCollectionFragment extends Fragment implements SwipeRefreshLayout
     private void setview() {
         rvMyConcern = (RecyclerView) view.findViewById(R.id.rvMyConcern);
         swipeRefresh=(SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        llMyConcernLogin= (LinearLayout) view.findViewById(R.id.llMyConcernLogin);
+        tvMyConcernLogin= (TextView) view.findViewById(R.id.tvMyConcernLogin);
         RefreshUtil.refresh(swipeRefresh,getActivity());
         swipeRefresh.setOnRefreshListener(this);
+    }
+    private void initView() {
+        if(TextUtils.isEmpty(token)){
+            llMyConcernLogin.setVisibility(View.VISIBLE);
+            rvMyConcern.setVisibility(View.GONE);
+            swipeRefresh.setVisibility(View.GONE);
+        }else {
+            llMyConcernLogin.setVisibility(View.GONE);
+            rvMyConcern.setVisibility(View.VISIBLE);
+        }
+        tvMyConcernLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

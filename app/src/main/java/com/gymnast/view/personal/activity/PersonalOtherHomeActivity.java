@@ -71,36 +71,36 @@ public class PersonalOtherHomeActivity extends ImmersiveActivity {
                     adapter.setOnItemClickListener(new ConcernAdapter.OnItemClickListener() {
                         @Override
                         public void OnItemClickListener(View view, int position) {
-                                ConcernData item= activityList.get(position);
-                                String fromtype=item.getFromType();
-                                if (activityList.size() != 0) {
-                                    if (fromtype.equals("1")) {
-                                        Intent i = new Intent(PersonalOtherHomeActivity.this, LiveActivity.class);
-                                        i.putExtra("item", item);
-                                        startActivity(i);
-                                    } else if (fromtype.equals("2")) {
-                                        int ActiveID = Integer.parseInt(item.getFromId());
-                                        Intent i = new Intent(PersonalOtherHomeActivity.this, ActivityDetailsActivity.class);
-                                        i.putExtra("ActiveID",ActiveID);
-                                        startActivity(i);
-                                    } else if (fromtype.equals("3")) {
-                                        int tieZiID = Integer.parseInt(item.getFromId());
-                                        Intent i = new Intent(PersonalOtherHomeActivity.this, PersonalPostsDetailActivity.class);
-                                        i.putExtra("TieZiID", tieZiID);
-                                        startActivity(i);
-                                    } else if (fromtype.equals("null")) {
-                                        Intent i = new Intent(PersonalOtherHomeActivity.this, PersonalDynamicDetailActivity.class);
-                                        i.putExtra("CirleID", item.getId());
-                                        startActivity(i);
-                                    }
+                            ConcernData item= activityList.get(position);
+                            String fromtype=item.getFromType();
+                            if (activityList.size() != 0) {
+                                if (fromtype.equals("1")) {
+                                    Intent i = new Intent(PersonalOtherHomeActivity.this, LiveActivity.class);
+                                    i.putExtra("item", item);
+                                    startActivity(i);
+                                } else if (fromtype.equals("2")) {
+                                    int ActiveID = Integer.parseInt(item.getFromId());
+                                    Intent i = new Intent(PersonalOtherHomeActivity.this, ActivityDetailsActivity.class);
+                                    i.putExtra("ActiveID",ActiveID);
+                                    startActivity(i);
+                                } else if (fromtype.equals("3")) {
+                                    int tieZiID = Integer.parseInt(item.getFromId());
+                                    Intent i = new Intent(PersonalOtherHomeActivity.this, PersonalPostsDetailActivity.class);
+                                    i.putExtra("TieZiID", tieZiID);
+                                    startActivity(i);
+                                } else if (fromtype.equals("null")) {
+                                    Intent i = new Intent(PersonalOtherHomeActivity.this, PersonalDynamicDetailActivity.class);
+                                    i.putExtra("CirleID", item.getId());
+                                    startActivity(i);
                                 }
                             }
-                        });
-                        adapter.notifyDataSetChanged();
-                        break;
-                    }
+                        }
+                    });
+                    adapter.notifyDataSetChanged();
+                    break;
             }
-        };
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,7 +220,7 @@ public class PersonalOtherHomeActivity extends ImmersiveActivity {
         mHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             Intent i=new Intent(PersonalOtherHomeActivity.this,ImageActivity.class);
+                Intent i=new Intent(PersonalOtherHomeActivity.this,ImageActivity.class);
                 i.putExtra("IMAGE",API.IMAGE_URL+avatar);
                 startActivity(i);
             }
@@ -292,7 +292,6 @@ public class PersonalOtherHomeActivity extends ImmersiveActivity {
                         }
                     });
                 }
-
             }
         }).start();
     }
@@ -301,7 +300,6 @@ public class PersonalOtherHomeActivity extends ImmersiveActivity {
             public String returnfromId;
             public String returnType;
             public String authInfo;
-
             @Override
             public void run() {
                 try {
@@ -385,7 +383,6 @@ public class PersonalOtherHomeActivity extends ImmersiveActivity {
         COLLAPSED,
         INTERNEDIATE
     }
-
     @Override
     protected void onResume() {
         super.onResume();

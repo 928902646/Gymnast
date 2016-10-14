@@ -3,6 +3,7 @@ package com.gymnast.view.personal.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -146,13 +148,11 @@ public class PersonalActivity extends ImmersiveActivity {
                     final int Concern = data.getInt("gz");
                     final int fans= data.getInt("fs");
                     final int dynamic= data.getInt("dt");
-                    //final Bitmap bitmap= PicUtil.getImageBitmap(API.IMAGE_URL + return_avatar);
                     if (obj.getInt("state") == 200) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mNickname.setText(name);
-                              //  me_head.setImageBitmap(bitmap);
                                 PicassoUtil.handlePic(PersonalActivity.this, PicUtil.getImageUrlDetail(PersonalActivity.this, StringUtil.isNullAvatar(return_avatar), 320, 320),me_head,320,320);
                                 tvConcern.setText(Concern+"关注");
                                 me_fans.setText(fans+"粉丝");
@@ -277,15 +277,23 @@ public class PersonalActivity extends ImmersiveActivity {
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(PersonalActivity.this,PersonSettingActivity.class);
-                startActivity(i);
+                if(!TextUtils.isEmpty(token)){
+                    Intent i=new Intent(PersonalActivity.this,PersonSettingActivity.class);
+                    startActivity(i);
+                }else {
+                    Toast.makeText(PersonalActivity.this,"请先登录再使用此功能",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         me_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(PersonalActivity.this,PersonalAllMsgActivity.class);
-                startActivity(i);
+                if(!TextUtils.isEmpty(token)){
+                    Intent i=new Intent(PersonalActivity.this,PersonalAllMsgActivity.class);
+                    startActivity(i);
+                }else {
+                    Toast.makeText(PersonalActivity.this,"请先登录再使用此功能",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         me_head.setOnClickListener(new View.OnClickListener() {

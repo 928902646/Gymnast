@@ -42,7 +42,6 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
     private LinearLayout llMyConcernLogin;
     private TextView tvMyConcernLogin;
     private String id;
-    private TextView error;
     private CircleAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     public static final int HANFLE_DATA_UPDATE=1;
@@ -90,10 +89,8 @@ public class CircleListFragment extends Fragment implements SwipeRefreshLayout.O
         listitem = (RecyclerView) view.findViewById(R.id.rvMyConcern);
         llMyConcernLogin= (LinearLayout) view.findViewById(R.id.llMyConcernLogin);
         tvMyConcernLogin= (TextView) view.findViewById(R.id.tvMyConcernLogin);
-        error= (TextView) view.findViewById(R.id.error);
         swipeRefresh=(SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
         RefreshUtil.refresh(swipeRefresh,getActivity());
-        swipeRefresh.setRefreshing(true);
         swipeRefresh.setOnRefreshListener(this);
     }
     private void initView() {

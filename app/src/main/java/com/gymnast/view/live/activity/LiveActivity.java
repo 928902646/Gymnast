@@ -342,7 +342,7 @@ public class LiveActivity extends ImmersiveActivity implements View.OnClickListe
         checkUserType();
         if (groupId==null|groupId.equals("")){
             getGroupID();
-        }
+        }else {}
         recyclerView.setHasFixedSize(false);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
