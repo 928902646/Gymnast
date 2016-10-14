@@ -240,7 +240,20 @@ public class ChoicenessCircleFragment extends Fragment implements View.OnClickLi
             listdata.clear();
             getcircle();
             getposts();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // 停止刷新
+                    swipeRefresh.setRefreshing(false);
+                }
+            }, 1000);
         }else {
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
     }
 }
