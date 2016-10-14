@@ -167,6 +167,19 @@ public class PersonalDynamicDetailActivity extends ImmersiveActivity implements 
         activityRootView.addOnLayoutChangeListener(this);
         setData();
         setCallBackView();
+        getPageView();
+    }
+    private void getPageView() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String uri=API.BASE_URL+"/v1/pageViwes";
+                HashMap<String,String>params=new HashMap<>();
+                params.put("types",1+"");
+                params.put("typeId",dynamicID+"");
+                PostUtil.sendPostMessage(uri,params);
+            }
+        }).start();
     }
     private void getBaseInfo() {
         SharedPreferences share = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);

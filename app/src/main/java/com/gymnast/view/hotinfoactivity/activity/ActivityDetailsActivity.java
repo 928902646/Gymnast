@@ -89,7 +89,7 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
     CallBackAdapter commentAdapter;
     boolean isCollected;
     HotInfoActivityUserRecyclerViewAdapter userLikeAdapter;
-   public static boolean isComment=true;
+    public static boolean isComment=true;
     public static final int HANDLE_BANNER_ACTIVE_DATA=1;
     public static final int HANDLE_NEW_ACTIVE_DATA=2;
     public static final int HANDLE_SEARCH_ACTIVE_DATA=3;
@@ -97,7 +97,7 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
     public static final int HANDLE_COMMENT_DATA=5;
     public static final int HANDLE_MAIN_USER_BACK=6;
     public static final int HANDLE_USER_WANT_TO_GO=7;
-   static ArrayList<CallBackDetailEntity> detailMSGs;
+    static ArrayList<CallBackDetailEntity> detailMSGs;
     ArrayList<String> userABC=new ArrayList<>();
     Handler handler=new Handler(){
         @Override
@@ -230,6 +230,19 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
         try{ Userid=Integer.parseInt(userId);}catch (Exception e){e.printStackTrace();}
         getSignUpInfo();
         getCollectionMenber();
+        getPageView();
+    }
+    private void getPageView() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String uri=API.BASE_URL+"/v1/pageViwes";
+                HashMap<String,String>params=new HashMap<>();
+                params.put("types",2+"");
+                params.put("typeId",activeID+"");
+                PostUtil.sendPostMessage(uri,params);
+            }
+        }).start();
     }
 
     private void getCollectionMenber() {
@@ -245,7 +258,7 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
                     JSONObject object=new JSONObject(result);
                     if (object.getInt("state")!=200){
                         userWantToGo=new ArrayList<UserDevas>();
-                       return;
+                        return;
                     }
                     JSONArray array=object.getJSONArray("data");
                     for (int i=0;i<array.length();i++){
@@ -649,11 +662,11 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
             case R.id.tvDetailPeopleNumber:
                 if (!checkLogIn()){return;};
                 //首页banner还没有传参数过来
-                 if(UserId==Userid){
+                if(UserId==Userid){
                     Intent i=new Intent(ActivityDetailsActivity.this,AuditActivity.class);
                     i.putExtra("activityId",activeID);
                     startActivity(i);
-                 }else {}
+                }else {}
                 break;
             case R.id.tvDetailSignUp:
                 if (!checkLogIn()){return;};
@@ -729,8 +742,8 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
                         }
                     }
                 }
+            }
         }
-    }
     }
     private void  setBaseState(){
         etCallBack.setHint("说点什么吧。。。");
@@ -739,7 +752,7 @@ public class ActivityDetailsActivity extends ImmersiveActivity implements View.O
         InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
-	 @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100){

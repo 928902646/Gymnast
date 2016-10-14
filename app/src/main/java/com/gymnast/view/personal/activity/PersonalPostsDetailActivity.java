@@ -91,7 +91,7 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case HANDLE_WHOLE_DATA:
-                    PicassoUtil.handlePic(PersonalPostsDetailActivity.this, PicUtil.getImageUrlDetail(PersonalPostsDetailActivity.this, circleAvatar, 58, 58), circle_head, 58, 58);
+                    PicassoUtil.handlePic(PersonalPostsDetailActivity.this, PicUtil.getImageUrlDetail(PersonalPostsDetailActivity.this, StringUtil.isNullAvatar(circleAvatar), 320, 320),circle_head,320,320);
                     tvNickName.setText(circleNickName);
                     tvTime.setText(sdr.format(new Date(createTime)) + "");
                     tvTitle.setText(title);

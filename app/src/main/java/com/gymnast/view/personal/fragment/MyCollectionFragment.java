@@ -272,4 +272,12 @@ public class MyCollectionFragment extends Fragment implements SwipeRefreshLayout
         }else {
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (list.size()!=0){
+            list.clear();
+            getdata();
+        }
+    }
 }

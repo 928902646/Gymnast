@@ -87,11 +87,6 @@ public class CircleItemFragment extends Fragment implements SwipeRefreshLayout.O
         super.onActivityCreated(savedInstanceState);
     }
     public void getData() {
-        CircleData data= (CircleData) getActivity().getIntent().getSerializableExtra("CircleData");
-        int circleId = 0;
-        if (data!=null){
-            circleId=data.getId();
-        }
         new Thread(new Runnable() {
             @Override
             public void run() {
