@@ -59,7 +59,6 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
     private TextView tvNickName;
     private TextView tvTitle,tvTime,tvConcern,tvCollect,tvReport,tvDelete, tvSpacial,tvTop;
     private WebView webView;
-    private PostsData mPostsData;
     private Dialog cameradialog;
     LinearLayout llShareToFriends,llShareToWeiChat,llShareToQQ,llShareToQQZone,llShareToMicroBlog;
     public static int shareNumber=0;//分享次数
@@ -319,6 +318,13 @@ public class PersonalPostsDetailActivity extends ImmersiveActivity implements Vi
         reflesh = (SwipeRefreshLayout) findViewById(R.id.srlReflesh);
         RefreshUtil.refresh(reflesh, this);
         etCallBackTieZi= (EditText) findViewById(R.id.etCallBackTieZi);
+        etCallBackTieZi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("tag", "do------111");
+                rvCallBack.smoothScrollBy(0,40);
+            }
+        });
         etCallBackTieZi.setHint("说点什么吧。。。");
         etCallBackTieZi.setHintTextColor(Color.parseColor("#999999"));
         ivSendTiezi= (ImageView) findViewById(R.id.ivSendTiezi);
